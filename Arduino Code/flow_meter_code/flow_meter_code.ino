@@ -15,6 +15,8 @@ unsigned int flowMilliLitres;
 unsigned long totalMilliLitres;
 
 unsigned long oldTime;
+//creates json for 
+unsigned String json;
 
 void setup()
 {
@@ -112,4 +114,17 @@ void pulseCounter()
 {
   // Increment the pulse counter
   pulseCount++;
+}
+
+/*
+JSON Encoder
+*/
+
+void jsonObj () 
+{
+  
+}
+void jsonAdd () 
+{
+  
 }
