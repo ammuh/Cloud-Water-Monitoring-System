@@ -11,3 +11,19 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.e
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-10 22:58:07.806
 !MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+!SESSION 2015-06-11 16:46:50.698 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2015-06-11 16:47:43.097
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-11 16:48:03.382
+!MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-11 16:48:03.458
+!MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
