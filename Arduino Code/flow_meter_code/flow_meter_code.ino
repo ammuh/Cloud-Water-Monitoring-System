@@ -16,7 +16,7 @@ unsigned long totalMilliLitres;
 
 unsigned long oldTime;
 //creates json for 
-unsigned String json;
+String json;
 
 void setup()
 {
@@ -36,6 +36,7 @@ void setup()
   flowMilliLitres   = 0;
   totalMilliLitres  = 0;
   oldTime           = 0;
+  json = "test";
 
   // The Hall-effect sensor is connected to pin 2 which uses interrupt 0.
   // Configured to trigger on a FALLING state change (transition from HIGH
