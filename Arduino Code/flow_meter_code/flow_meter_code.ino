@@ -108,6 +108,7 @@ void loop()
     Serial.print(totalMilliLitres);
     Serial.println("mL"); 
     */
+    Serial.println(obj1.getJson());
     // Reset the pulse counter so we can start incrementing again
     pulseCount = 0;
     
