@@ -37,6 +37,7 @@ void setup()
   flowMilliLitres   = 0;
   totalMilliLitres  = 0;
   oldTime           = 0;
+  
 
   // The Hall-effect sensor is connected to pin 2 which uses interrupt 0.
   // Configured to trigger on a FALLING state change (transition from HIGH
@@ -79,6 +80,13 @@ void loop()
     totalMilliLitres += flowMilliLitres;
       
     unsigned int frac;
+    // Determine the fractional part. The 10 multiplier gives us 1 decimal place.
+    frac = (flowRate - int(flowRate)) * 10;
+    
+    obj1.jsonAdd(String(millis()),String(flowMilliLitres),String(0),String(totalMilliLitres));
+    
+    Serial.println(obj1.getJson());
+    /*
     //Print Milliseconds
     Serial.print("Time: ");
     Serial.print(millis());
@@ -87,8 +95,7 @@ void loop()
     Serial.print("Flow rate: ");
     Serial.print(int(flowRate));  // Print the integer part of the variable
     Serial.print(".");             // Print the decimal point
-    // Determine the fractional part. The 10 multiplier gives us 1 decimal place.
-    frac = (flowRate - int(flowRate)) * 10;
+    
     Serial.print(frac, DEC) ;      // Print the fractional part of the variable
     Serial.print("L/min");
     // Print the number of litres flowed in this second
@@ -100,7 +107,7 @@ void loop()
     Serial.print("  Output Liquid Quantity: ");             // Output separator
     Serial.print(totalMilliLitres);
     Serial.println("mL"); 
-
+    */
     // Reset the pulse counter so we can start incrementing again
     pulseCount = 0;
     
