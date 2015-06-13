@@ -22,7 +22,7 @@ void setup()
 {
   
   // Initialize a serial connection for reporting values to the host
-  Serial.begin(38400);
+   Serial.begin(38400);
    
   // Set up the status LED line as an output
   pinMode(statusLed, OUTPUT);
@@ -47,6 +47,7 @@ void setup()
 /**
  * Main program loop
  */
+ 
 void loop()
 {
    
@@ -108,9 +109,8 @@ void loop()
   }
 }
 
-/*
-Insterrupt Service Routine
- */
+
+
 void pulseCounter()
 {
   // Increment the pulse counter
@@ -121,11 +121,4 @@ void pulseCounter()
 JSON Encoder
 */
 
-void jsonObj () 
-{
-  
-}
-void jsonAdd () 
-{
-  
-}
+
