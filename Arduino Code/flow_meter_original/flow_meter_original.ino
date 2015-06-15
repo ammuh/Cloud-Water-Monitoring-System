@@ -1,4 +1,3 @@
-
 #include <Json.h>
 byte statusLed    = 13;
 
@@ -18,7 +17,7 @@ unsigned long totalMilliLitres;
 unsigned long oldTime;
 //creates json for formatting objects
 Json obj1(String(12345), String("Seconds"), String("Flow_Rate"), String("Temperature"), String("Milliliters_Used"));
-
+/*
 //Variables for starting with switch
 
 int inPin = 4;         // the number of the input pin
@@ -32,17 +31,15 @@ boolean previous = false;    // the previous reading from the input pin
 // will quickly become a bigger number than can be stored in an int.
 long time = 0;         // the last time the output pin was toggled
 long debounce = 200;   // the debounce time, increase if the output flickers
-
-
-void setup()
-{
-  
+*/
+void setup() {
+  // put your setup code here, to run once:
   // Initialize a serial connection for reporting values to the host
-   Serial.begin(115200);
+   Serial.begin(38400);
    //Switch
    
-   pinMode(inPin, INPUT);
   
+  /*pinMode(inPin, INPUT);*/
   
   // Set up the status LED line as an output
   pinMode(statusLed, OUTPUT);
@@ -64,37 +61,15 @@ void setup()
   attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
 }
 
-/**
- * Main program loop
- */
- 
-void loop()
-{
-   reading = digitalRead(inPin);
-   
-   if (reading == HIGH && previous == false && millis() - time > debounce) {
-    state = true; //Change state
-    oldTime = millis(); //reset oldTime to compensate for time user takes to press button
-    time = millis(); //switch was toggled so need to reset time for next logic gate
-    unsigned long timeStart = millis();
-    Serial.println("Switch Activated, measure loop began");
-    
-    while (state == true) {
-        
-      
-      if (digitalRead(inPin) == HIGH && millis() - time > debounce) {
-        Serial.println("Swith Toggled");
-        state = false;
-        
-      }
-      else {
-        //Continues with measurement process
-        if((millis() - oldTime) > 1000)    // Only process counters once per second
+void loop() {
+  // put your main code here, to run repeatedly:
+  
+  if((millis() - oldTime) > 1000)    // Only process counters once per second
           { 
             // Disable the interrupt while calculating flow rate and sending the value to
             // the host
             detachInterrupt(sensorInterrupt);
-            Serial.println("In measurement");    
+             
             // Because this loop may not complete in exactly 1 second intervals we calculate
             // the number of milliseconds that have passed since the last execution and use
             // that to scale the output. We also apply the calibrationFactor to scale the output
@@ -120,37 +95,21 @@ void loop()
             // Determine the fractional part. The 10 multiplier gives us 1 decimal place.
             frac = (flowRate - int(flowRate)) * 10;
             
-            obj1.jsonAdd(String(millis()-timeStart),String(flowMilliLitres),String(0),String(totalMilliLitres));
+            obj1.jsonAdd(String(millis()),String(flowMilliLitres),String(0),String(totalMilliLitres));
                   
             // Reset the pulse counter so we can start incrementing again
             pulseCount = 0;
             
             // Enable the interrupt again now that we've finished sending output
             attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
+            Serial.println(obj1.getJson());
           }
-        
-      }
-      
-    }
-    Serial.println("Exited while Loop");
-    Serial.println(obj1.getJson());
-    time = millis();    
-  }
+           
  
-  //reset previous setting
-  previous = false;   
+        
 }
-
-
-
 void pulseCounter()
 {
   // Increment the pulse counter
   pulseCount++;
 }
-
-/*
-JSON Encoder
-*/
-
-
