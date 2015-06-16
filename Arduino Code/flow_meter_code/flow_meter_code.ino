@@ -1,5 +1,6 @@
 
 #include <Json.h>
+#include <MemoryFree.h>
 byte statusLed    = 13;
 
 byte sensorInterrupt = 0;  // 0 = digital pin 2
@@ -52,7 +53,7 @@ void setup()
 void loop()
 {
    
-   if((millis() - oldTime) > 1000)    // Only process counters once per second
+   if((millis() - oldTime) > 2000)    // Only process counters once per second
   { 
     // Disable the interrupt while calculating flow rate and sending the value to
     // the host
@@ -86,6 +87,20 @@ void loop()
     obj1.jsonAdd(String(millis()),String(flowMilliLitres),String(0),String(totalMilliLitres));
     
     Serial.println(obj1.getJson());
+    Serial.print("Character Length ");
+    Serial.println(obj1.getJson().length());
+    Serial.print("Free Memory ");
+    Serial.println(freeMemory());
+    Serial.print("Var Size ");
+    Serial.println(sizeof(obj1));
+    if (obj1.getJson().length() < 26)
+    {
+     Serial.println("Bad Data"); 
+    }
+    else 
+    {
+     Serial.println("Good Data"); 
+    }
     /*
     //Print Milliseconds
     Serial.print("Time: ");
