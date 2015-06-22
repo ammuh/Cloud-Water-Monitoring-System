@@ -70,6 +70,10 @@
             <version>${appengine.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+        	<groupId>com.googlecode.objectify</groupId>
+        	<artifactId>objectify</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

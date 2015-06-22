@@ -27,3 +27,25 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.e
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-11 16:48:03.458
 !MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+!SESSION 2015-06-18 09:59:07.407 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_45
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product -data C:\Users\Ammar Husain\Work\BlueStamp\Software -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-18 11:47:28.346
+!MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-18 11:47:28.393
+!MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-18 12:09:16.058
+!MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-18 12:09:16.058
+!MESSAGE Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2015-06-18 12:09:16.557
+!MESSAGE The POM for com.googlecode.objectify:objectify:jar: is missing, no dependency information available
