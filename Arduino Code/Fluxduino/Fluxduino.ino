@@ -2,9 +2,20 @@
 Code for Fluxduino
 */
 
+/* Libraries */
+//libraries for temp sensor
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+/*Variables*/
 //Button variables
 int buttonPin = 3;   // choose the input pin (for a pushbutton)
 boolean state = false;     // variable for reading the pin status
+
+//Temp Sensor vars
+#define ONE_WIRE_BUS 4
+DallasTemperature sensors(&oneWire);
+float temperature;
 
 //Flow Meter Variabls
 byte sensorInterrupt = 0;  // 0 = digital pin 2
@@ -18,7 +29,6 @@ unsigned int flowMilliLitres;
 unsigned long totalMilliLitres;
 unsigned long oldTime;
 
-
 void setup() {
   //Pushbutton Setup
   pinMode(buttonPin, INPUT);    // declare pushbutton as input
@@ -26,25 +36,39 @@ void setup() {
   //Flow Meter Setup
   pinMode(sensorPin, INPUT);
   digitalWrite(sensorPin, HIGH);
-
   pulseCount        = 0;
   flowRate          = 0.0;
   flowMilliLitres   = 0;
   totalMilliLitres  = 0;
   oldTime           = 0;
-  
-
-  // The Hall-effect sensor is connected to pin 2 which uses interrupt 0.
-  // Configured to trigger on a FALLING state change (transition from HIGH
-  // state to LOW state)
   attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
+  sensors.begin();
+  //Temp Sensor Setup
 }
 
 void loop(){  
   //Halts till Push Button is pressed
   while (digitalRead(buttonPin) == LOW){
   }
-  
+  oldTime = 0;
+  //Measurement Process
+  if((millis() - oldTime) > 1000)    // Only process counters once per second
+          { 
+            //Flow Meter Conversions
+            detachInterrupt(sensorInterrupt);           
+            flowRate = ((1000.0 / (millis() - oldTime)) * pulseCount) / calibrationFactor;
+            oldTime = millis();
+            flowMilliLitres = (flowRate / 60) * 1000;
+            totalMilliLitres += flowMilliLitres;
+            unsigned int frac;
+            frac = (flowRate - int(flowRate)) * 10;
+            //Temp Sensor Conversions
+            sensors.requestTemperatures();
+            temperature = sensors.getTempCByIndex(0);
+            //TODO Add in JSON Write
+            pulseCount = 0;
+            attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
+          }
 }
 
 /*Extra Methods*/
