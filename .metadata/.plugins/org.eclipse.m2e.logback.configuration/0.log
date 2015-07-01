@@ -114,3 +114,53 @@
 2015-06-27 08:59:09,195 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
 2015-06-27 08:59:09,195 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2015-06-27 08:59:09,195 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 19:19:44,889 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:19:44,899 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 19:19:44,901 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:19:44,901 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 19:25:23,186 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:25:23,188 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 19:25:23,189 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:25:23,190 [Worker-0] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 19:25:35,423 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:25:35,424 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 19:25:35,425 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:25:35,425 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 19:25:52,205 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:25:52,206 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 19:25:52,207 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:25:52,207 [Worker-9] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 19:28:03,437 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:28:03,437 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 19:28:03,439 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:28:03,439 [Worker-2] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 19:30:27,932 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:30:27,932 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 19:30:27,935 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 19:30:27,935 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 23:28:39,499 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 23:28:39,499 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 23:28:39,505 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 23:28:39,505 [Worker-25] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-27 23:31:10,573 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 23:31:10,573 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-27 23:31:10,575 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-27 23:31:10,575 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-28 11:42:24,566 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-28 11:42:24,587 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-28 11:42:24,597 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-28 11:42:24,597 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-28 11:42:24,752 [Worker-1] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Flux_Plant
+2015-06-28 11:42:25,210 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+2015-06-28 11:42:25,413 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+2015-06-28 11:42:25,423 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-28 11:42:25,443 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2015-06-29 10:17:51,390 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-29 10:17:51,398 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\main\resources
+2015-06-29 10:17:51,401 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-29 10:17:51,401 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\Ammar Husain\Work\BlueStamp\Software\Flux_Plant\src\test\resources
+2015-06-29 10:17:51,720 [Worker-1] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for Flux_Plant
+2015-06-29 10:17:52,095 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+2015-06-29 10:17:52,555 [Worker-1] WARN  o.e.m.c.i.embedder.EclipseLogger - Failed to retrieve plugin descriptor for com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505: Plugin com.google.appengine:gcloud-maven-plugin:0.9.58.v20150505 or one of its dependencies could not be resolved: Cannot access central (http://repo.maven.apache.org/maven2) in offline mode and the artifact com.google.appengine:gcloud-maven-plugin:jar:0.9.58.v20150505 has not been downloaded from it before.
+2015-06-29 10:17:52,555 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-06-29 10:17:52,587 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource

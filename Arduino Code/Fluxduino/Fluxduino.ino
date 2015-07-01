@@ -129,7 +129,7 @@ void loop(){
   //Halts till Push Button is pressed
   while (!state)
   {
-    if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>700) {
+    if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>1000) {
       pnt("Button Press");
       state = true;
       lastpress = millis();
@@ -164,7 +164,7 @@ void loop(){
             pulseCount = 0;
             attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
           }
-     if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>700)
+     if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>1000)
      {
       pnt("Button Press");
       state = false;

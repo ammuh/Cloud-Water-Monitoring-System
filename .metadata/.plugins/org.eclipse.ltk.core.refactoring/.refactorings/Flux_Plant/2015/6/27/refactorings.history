@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Flux_Plant/src/main/java/com/fluxplant/YourFirstAPI.java&apos; to &apos;FluxPlantAPI.java&apos;" description="Rename resource &apos;YourFirstAPI.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/java/com/fluxplant/YourFirstAPI.java" name="FluxPlantAPI.java" stamp="1435458351802" updateReferences="true"/>
+</session>
