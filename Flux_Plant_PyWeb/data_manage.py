@@ -7,6 +7,7 @@ class sessIdPointers(ndb.Model):
 
 class FluxSensors(ndb.Model):
   Ip= ndb.IntegerProperty()
+  ConsumId= ndb.StringProperty()
   Type= ndb.StringProperty()
   Privacy= ndb.StringProperty()
   bqpointer= ndb.StringProperty()

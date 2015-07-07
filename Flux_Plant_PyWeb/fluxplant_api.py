@@ -16,6 +16,9 @@ from data_manage import sessIdPointers #Only a Structured Property Class
 from data_manage import FluxSensors
 from data_manage import FluxSessions
 from google.appengine.ext import ndb
+#Random String Generation
+import random
+import string
 
 @endpoints.api(name='fluxplant', version='v1')
 class FluxPlantApi(remote.Service):
@@ -39,16 +42,19 @@ class FluxPlantApi(remote.Service):
       senstype="Temperature"
     sensId= FluxSensors.allocate_ids(size=1)[0]
     sensorKey= ndb.Key('FluxSensors', sensId)
-    newSensor= FluxSensors(key= sensorKey, Ip=request.ip,Type=senstype, Privacy=privacy)
+    rando = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(10)])
+    conId= rando + "-" + str(sensId)
+    newSensor= FluxSensors(key= sensorKey, Ip=request.ip, ConsumId=conId, Type=senstype, Privacy=privacy)
     newSensor.put()
      #TODO create unique id and return in body
     #TODO save key in datastore
-    return RegSensorResponse(uniqueId= str(sensId), senstype=senstype)
+    return RegSensorResponse(uniqueId= str(conId), senstype=senstype)
 
   @endpoints.method(newSessionForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.New')
   def NewSession(self, request):
     #TODO Create New Session Key
-    sensKey= ndb.Key(FluxSensors, request.uniqueId)
+    sensor = FluxSensors.query(FluxSensors.ConsumId == request.uniqueId).fetch(1)[0]
+    sensKey= ndb.Key(FluxSensors, sensor.key.id())
     sessId = FluxSessions.allocate_ids(size=1, parent=sensKey)[0]
     sessKey= ndb.Key(FluxSessions, sessId, parent=sensKey)
 
