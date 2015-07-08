@@ -50,3 +50,15 @@ class sessionDataSubResponse(messages.Message):
   status= messages.StringField(1)
   dataview= messages.StringField(2)
 
+#Getting Sensor Data
+class RawSensorData (messages.Message):
+  time= messages.StringField(1)
+  mlUsed= messages.FloatField(2)
+  avgTemperature= messages.FloatField(3)
+
+class SensorDataForm(messages.Message):
+  uniqueId=messages.StringField(1, required=True)
+
+class SensorDataResponse(messages.Message):
+  datatype= messages.EnumField(dataTypes, 1, required=True)
+  allSessions= messages.MessageField(RawSensorData, 2, repeated=True)

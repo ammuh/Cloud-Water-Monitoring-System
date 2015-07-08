@@ -13,6 +13,8 @@ from request_models import sessionDataSubmit
 from request_models import sessionDataSubResponse
 from request_models import sessionDataAgg
 from request_models import dataTypes
+from request_models import SensorData
+from request_models import SensorDataForm
 #DataStore Structure
 from data_manage import sessIdPointers #Only a Structured Property Class
 from data_manage import FluxSensors
@@ -88,7 +90,12 @@ class FluxPlantApi(remote.Service):
     session.mlUsed= mlUsed
     session.put()
     return sessionDataSubResponse(status="Some Response Status", dataview="Link to data")
+  #Aggregating SensorData and returning in JSON dataset
+  @endpoints.method(SensorDataForm,SensorDataResponse, path'GetSensData', http_method='POST', name='sessions.GetSensData')
+  def GetSensData(self, request):
 
+    resp= SensorDataResponse
+    return resp
  # @endpoints.method(newSessionRequestForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.newSession')
  # def session_request(self, request):
  #   return newSessionResponse(message1= request.device_id, message2= request.info)
