@@ -13,8 +13,9 @@ from request_models import sessionDataSubmit
 from request_models import sessionDataSubResponse
 from request_models import sessionDataAgg
 from request_models import dataTypes
-from request_models import SensorData
+from request_models import SensorDataResponse
 from request_models import SensorDataForm
+from request_models import RawSensorData
 #DataStore Structure
 from data_manage import sessIdPointers #Only a Structured Property Class
 from data_manage import FluxSensors
@@ -58,7 +59,7 @@ class FluxPlantApi(remote.Service):
   def NewSession(self, request):
     #TODO Create New Session Key
     sensor = FluxSensors.query(FluxSensors.ConsumId == request.uniqueId).fetch(1)[0]
-    sensKey= ndb.Key(FluxSensors, sensor.key.id())
+    sensKey= sensor.key
     sessId = FluxSessions.allocate_ids(size=1, parent=sensKey)[0]
     sessKey= ndb.Key(FluxSessions, sessId, parent=sensKey)
 
@@ -91,11 +92,16 @@ class FluxPlantApi(remote.Service):
     session.put()
     return sessionDataSubResponse(status="Some Response Status", dataview="Link to data")
   #Aggregating SensorData and returning in JSON dataset
-  @endpoints.method(SensorDataForm, SensorDataResponse, path'GetSensData', http_method='POST', name='sessions.GetSensData')
+  @endpoints.method(SensorDataForm, SensorDataResponse, path='GetSensData', http_method='POST', name='sessions.GetSensData')
   def GetSensData(self, request):
+    sensor = FluxSensors.query(FluxSensors.ConsumId == request.uniqueId).fetch(1)[0]
+    sessQryObj = FluxSessions.query(ancestor=sensor.key).fetch()
+    sessList = []
+    for i in xrange(len(sessQryObj)):
+      sessData = RawSensorData(time=str(sessQryObj[i].Time), mlUsed=sessQryObj[i].mlUsed, avgTemperature=sessQryObj[i].AverageTemp)
+      sessList.append(sessData)
 
-    resp= SensorDataResponse(datatype=dataTypes.JSON, message=request.message)
-    return resp
+    return SensorDataResponse(datatype=dataTypes.JSON, allSessions=sessList, message=request.message)
  # @endpoints.method(newSessionRequestForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.newSession')
  # def session_request(self, request):
  #   return newSessionResponse(message1= request.device_id, message2= request.info)

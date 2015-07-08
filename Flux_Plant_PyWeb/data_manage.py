@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 
 #class FLuxUser(ndb.Model):
-# Sensor Entity Group
+  # Sensor Entity Group
 class sessIdPointers(ndb.Model):
   SessionId= ndb.StringProperty()
 
