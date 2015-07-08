@@ -91,10 +91,10 @@ class FluxPlantApi(remote.Service):
     session.put()
     return sessionDataSubResponse(status="Some Response Status", dataview="Link to data")
   #Aggregating SensorData and returning in JSON dataset
-  @endpoints.method(SensorDataForm,SensorDataResponse, path'GetSensData', http_method='POST', name='sessions.GetSensData')
+  @endpoints.method(SensorDataForm, SensorDataResponse, path'GetSensData', http_method='POST', name='sessions.GetSensData')
   def GetSensData(self, request):
 
-    resp= SensorDataResponse
+    resp= SensorDataResponse(datatype=dataTypes.JSON, message=request.message)
     return resp
  # @endpoints.method(newSessionRequestForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.newSession')
  # def session_request(self, request):

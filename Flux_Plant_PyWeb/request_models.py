@@ -58,7 +58,9 @@ class RawSensorData (messages.Message):
 
 class SensorDataForm(messages.Message):
   uniqueId=messages.StringField(1, required=True)
+  message = messages.StringField(2)
 
 class SensorDataResponse(messages.Message):
   datatype= messages.EnumField(dataTypes, 1, required=True)
   allSessions= messages.MessageField(RawSensorData, 2, repeated=True)
+  message = messages.StringField(3)
