@@ -64,3 +64,12 @@ class SensorDataResponse(messages.Message):
   datatype= messages.EnumField(dataTypes, 1, required=True)
   allSessions= messages.MessageField(RawSensorData, 2, repeated=True)
   message = messages.StringField(3)
+
+#User Registration
+class UserRegForm(messages.Message):
+  displayName = messages.StringField(1)
+  sensorIds= messages.StringField(repeated=True, 2)
+
+class UserRegResponse(message.Message):
+  userEmail = messages.StringField(1)
+  status = messages.StringField(2)

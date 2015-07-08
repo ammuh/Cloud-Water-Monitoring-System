@@ -20,3 +20,8 @@ class FluxSessions(ndb.Model):
   Date= ndb.DateProperty(auto_now_add=True)
   AverageTemp= ndb.FloatProperty()
   mlUsed= ndb.FloatProperty()
+#User Class
+class Users(ndb.Model):
+  email= ndb.StringProperty()
+  username= ndb.StringProperty()
+  Sensors= ndb.KeyProperty(repeated=True)

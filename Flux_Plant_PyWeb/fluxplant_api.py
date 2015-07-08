@@ -16,6 +16,8 @@ from request_models import dataTypes
 from request_models import SensorDataResponse
 from request_models import SensorDataForm
 from request_models import RawSensorData
+from request_models import UserRegForm
+from request_models import UserRegResponse
 #DataStore Structure
 from data_manage import sessIdPointers #Only a Structured Property Class
 from data_manage import FluxSensors
@@ -25,16 +27,21 @@ from google.appengine.ext import ndb
 import random
 import string
 
+#OAUTH
+
+WEB_CLIENT_ID = 'replace this with your web client application ID'
+ANDROID_CLIENT_ID = 'replace this with your Android client ID'
+IOS_CLIENT_ID = 'replace this with your iOS client ID'
+ANDROID_AUDIENCE = WEB_CLIENT_ID
+
+package = 'Hello'
+
 @endpoints.api(name='fluxplant', version='v1')
 class FluxPlantApi(remote.Service):
   """FluxPlantApi v1."""
 
-  #@endpoints.method( , , path='newSession', http_method='GET', name='sessions.newSession')
-  #@endpoints.method( , , path='newSession', http_method='GET', name='sessions.newSession')
-  #@endpoints.method( , , path='newSession', http_method='GET', name='sessions.newSession')
-
   #Registering new sensor in network
-  @endpoints.method(RegSensorForm, RegSensorResponse, path='RegSensor', http_method='POST', name='sensors.RegSensor')
+  @endpoints.method(RegSensorForm, RegSensorResponse, path='RegSensor', http_method='POST', name='sensors.RegSensor', scopes)
   def RegSensor(self, request):
     #TODO: Add functionality to store all request data in datastore
     privacy="Private"
@@ -91,6 +98,7 @@ class FluxPlantApi(remote.Service):
     session.mlUsed= mlUsed
     session.put()
     return sessionDataSubResponse(status="Some Response Status", dataview="Link to data")
+  #Session and Submit Data
   #Aggregating SensorData and returning in JSON dataset
   @endpoints.method(SensorDataForm, SensorDataResponse, path='GetSensData', http_method='POST', name='sessions.GetSensData')
   def GetSensData(self, request):
@@ -102,6 +110,9 @@ class FluxPlantApi(remote.Service):
       sessList.append(sessData)
 
     return SensorDataResponse(datatype=dataTypes.JSON, allSessions=sessList, message=request.message)
+  @endpoints.method()
+  def RegUser(self, request):
+    return
  # @endpoints.method(newSessionRequestForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.newSession')
  # def session_request(self, request):
  #   return newSessionResponse(message1= request.device_id, message2= request.info)
