@@ -14,7 +14,8 @@ class FluxSensors(ndb.Model):
   SessionIdPointers= ndb.StructuredProperty(sessIdPointers, repeated=True)
 # Sensor Sessions Entity Group
 class FluxSessions(ndb.Model):
-  Time= ndb.TimeProperty(auto_now_add=True) 
+  Time= ndb.TimeProperty(auto_now_add=True)
+  clientToken= ndb.StringProperty() 
   uId= ndb.StringProperty()
   Date= ndb.DateProperty(auto_now_add=True)
   AverageTemp= ndb.FloatProperty()

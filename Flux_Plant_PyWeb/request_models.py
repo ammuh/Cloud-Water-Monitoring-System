@@ -22,7 +22,7 @@ class newSessionForm(messages.Message):
   uniqueId= messages.StringField(1, required=True)
 
 class newSessionResponse(messages.Message):
-  sessionId= messages.StringField(1)
+  clientToken= messages.StringField(1)
 
 #Handling Session Data
 class dataTypes(messages.Enum):
@@ -41,8 +41,8 @@ class sessionDataAgg(messages.Message):
 
 class sessionDataSubmit(messages.Message):
   uniqueId= messages.StringField(1, required=True)
-  sessionId= messages.StringField(2, required=True)
-  datatype= messages.EnumField( dataTypes, 3, required=True)
+  clientToken= messages.StringField(2, required=True)
+  datatype= messages.EnumField(dataTypes, 3, required=True)
   rawData= messages.MessageField(sessionDataRaw, 4, repeated=True)
   aggData= messages.MessageField(sessionDataAgg, 5)
 

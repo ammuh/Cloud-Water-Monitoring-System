@@ -11,6 +11,8 @@ from request_models import newSessionResponse
 from request_models import sessionDataRaw
 from request_models import sessionDataSubmit
 from request_models import sessionDataSubResponse
+from request_models import sessionDataAgg
+from request_models import dataTypes
 #DataStore Structure
 from data_manage import sessIdPointers #Only a Structured Property Class
 from data_manage import FluxSensors
@@ -58,16 +60,33 @@ class FluxPlantApi(remote.Service):
     sessId = FluxSessions.allocate_ids(size=1, parent=sensKey)[0]
     sessKey= ndb.Key(FluxSessions, sessId, parent=sensKey)
 
-    newSession= FluxSessions(key=sessKey, uId=request.uniqueId)
+    rando = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(10)])
+    cId= rando + "-" + str(sessId)
+
+    newSession= FluxSessions(key=sessKey, uId=request.uniqueId, clientToken=cId)
     newSession.put()
+
     #Save Session Key in Datastore along with provided Unique ID
     #Return Session Key
-    return newSessionResponse(sessionId=str(sessId))
+    return newSessionResponse(clientToken=cId)
 
   @endpoints.method(sessionDataSubmit, sessionDataSubResponse, path='DataSubmit', http_method='POST', name='sessions.DataSubmit')
   def DataSubmit(self, request):
-      
-
+    session = FluxSessions.query(FluxSessions.clientToken == request.clientToken).fetch(1)[0]
+    temp=3
+    mlUsed=123
+    runningTotal=0
+    if request.datatype == dataTypes.JSON:
+      for i in xrange(len(request.rawData)):
+        runningTotal+= request.rawData[i].temperature
+      temp= runningTotal/(len(request.rawData))
+      mlUsed= request.rawData[len(request.rawData)-1].mlUsed
+    else:
+      mlUsed= request.aggData.mlUsed
+      temp= request.aggData.avgTemperature
+    session.AverageTemp= temp
+    session.mlUsed= mlUsed
+    session.put()
     return sessionDataSubResponse(status="Some Response Status", dataview="Link to data")
 
  # @endpoints.method(newSessionRequestForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.newSession')
