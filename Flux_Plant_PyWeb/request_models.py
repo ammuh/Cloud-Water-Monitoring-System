@@ -68,8 +68,8 @@ class SensorDataResponse(messages.Message):
 #User Registration
 class UserRegForm(messages.Message):
   displayName = messages.StringField(1)
-  sensorIds= messages.StringField(repeated=True, 2)
+  sensorIds= messages.StringField(2, repeated=True)
 
-class UserRegResponse(message.Message):
+class UserRegResponse(messages.Message):
   userEmail = messages.StringField(1)
   status = messages.StringField(2)

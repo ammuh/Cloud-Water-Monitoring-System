@@ -22,6 +22,7 @@ from request_models import UserRegResponse
 from data_manage import sessIdPointers #Only a Structured Property Class
 from data_manage import FluxSensors
 from data_manage import FluxSessions
+from data_manage import Users
 from google.appengine.ext import ndb
 #Random String Generation
 import random
@@ -36,12 +37,12 @@ ANDROID_AUDIENCE = WEB_CLIENT_ID
 
 package = 'Hello'
 
-@endpoints.api(name='fluxplant', version='v1')
+@endpoints.api(name='fluxplant', version='v1', scopes=[endpoints.EMAIL_SCOPE])
 class FluxPlantApi(remote.Service):
   """FluxPlantApi v1."""
 
   #Registering new sensor in network
-  @endpoints.method(RegSensorForm, RegSensorResponse, path='RegSensor', http_method='POST', name='sensors.RegSensor', scopes)
+  @endpoints.method(RegSensorForm, RegSensorResponse, path='RegSensor', http_method='POST', name='sensors.RegSensor')
   def RegSensor(self, request):
     #TODO: Add functionality to store all request data in datastore
     privacy="Private"
@@ -110,9 +111,18 @@ class FluxPlantApi(remote.Service):
       sessList.append(sessData)
 
     return SensorDataResponse(datatype=dataTypes.JSON, allSessions=sessList, message=request.message)
-  @endpoints.method()
+  #Registering Users  
+  @endpoints.method(UserRegForm, UserRegResponse, path='RegUser', http_method='POST', name='Users.RegUser')
   def RegUser(self, request):
-    return
+    currentUser = endpoints.get_current_user()
+    usrKey = ndb.Key(Users, currentUser.user_id())
+    usr = Users(key= usrKey, email=currentUser.email(), userObj=currentUser)
+    if request.displayName != None and len(request.displayName) <= 4:
+      usr.username= request.displayName
+    else:
+      usr.username= currentUser.nickname()
+    usr.put()
+    return UserRegResponse(userEmail= currentUser.email())
  # @endpoints.method(newSessionRequestForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.newSession')
  # def session_request(self, request):
  #   return newSessionResponse(message1= request.device_id, message2= request.info)

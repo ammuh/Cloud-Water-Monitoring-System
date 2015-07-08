@@ -24,4 +24,5 @@ class FluxSessions(ndb.Model):
 class Users(ndb.Model):
   email= ndb.StringProperty()
   username= ndb.StringProperty()
+  userObj= ndb.UserProperty()
   Sensors= ndb.KeyProperty(repeated=True)
