@@ -73,3 +73,12 @@ class UserRegForm(messages.Message):
 class UserRegResponse(messages.Message):
   userEmail = messages.StringField(1)
   status = messages.StringField(2)
+
+#Getting User Data
+class SensorDataStructure(messages.Message):
+  sensorId= messages.StringField(1)
+  data= messages.MessageField(RawSensorData, 2, repeated=True)
+
+class GetDataResponse(messages.Message):
+  userEmail= messages.StringField(1)
+  DataBySensors= messages.MessageField(SensorDataStructure, 2, repeated=True)
