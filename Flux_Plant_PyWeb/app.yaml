@@ -9,11 +9,11 @@ handlers:
 
 - url: /_ah/spi/.*
   script: fluxplant_api.APPLICATION
-#routing Static Files
-- url: /
-  mime_type: text/html
-  static_files: static/pages/examples/login.html
-  upload: static/pages/examples/login\.html
+#WebApp 2 Pointer
+- url: /.*
+  script: fluxplant.app
+
+#Static Files
 - url: /(.*\.html)
   mime_type: text/html
   static_files: static/\1
