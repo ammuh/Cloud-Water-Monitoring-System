@@ -7,8 +7,9 @@ import webob.multidict
 
 from webapp2_extras import auth, sessions, jinja2
 from jinja2.runtime import TemplateNotFound
-
 from simpleauth import SimpleAuthHandler
+
+import json
 
 class BaseRequestHandler(webapp2.RequestHandler):
   def dispatch(self):
@@ -183,3 +184,16 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     See example/secrets.py.template
     """
     return secrets.AUTH_CONFIG[provider]
+
+class NewSession(webapp2.RequestHandler):
+  def post(self):
+    #s = json.loads(self.request.body)
+    #uId= s.get("uniqueId")
+    self.response.body = "{\"clientToken\":\"3209ruf099r\"}"
+  
+
+class DataSubmit(object):
+  def post(self):
+    logging.debug("DataSubmited")
+    self.redirect('/login')
+    

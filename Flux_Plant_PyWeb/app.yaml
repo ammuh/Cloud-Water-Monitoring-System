@@ -11,8 +11,12 @@ handlers:
   script: fluxplant_api.APPLICATION
 #WebApp 2 Pointer
 - url: /fp/.*
-  script: main.app
+  script: main.webapp
   secure: always
+
+- url: /device/.*
+  script: main.deviceAPI
+  secure: optional
 
 - url: /login
   mime_type: text/html

@@ -26,9 +26,16 @@ app_config = {
 routes = [
  Route('/fp/profile', handler='handlers.ProfileHandler', name='profile'),
  Route('/fp/auth/<provider>', handler='handlers.AuthHandler:_simple_auth', name='auth_login'),
- Route('/fp/auth/<provider>/callback', 
-   handler='handlers.AuthHandler:_auth_callback', name='auth_callback'),
- Route('/fp/logout', handler='handlers.AuthHandler:logout', name='logout')
+ Route('/fp/auth/<provider>/callback', handler='handlers.AuthHandler:_auth_callback', name='auth_callback'),
+ Route('/fp/logout', handler='handlers.AuthHandler:logout', name='logout'),
 ]
 
-app = WSGIApplication(routes, config=app_config, debug=True)
+webapp = WSGIApplication(routes, config=app_config, debug=True)
+
+#Device App handler
+
+routes2 = [
+ Route('/device/NewSession', handler='handlers.NewSession', name='NewSession'),
+ Route('/device/DataSubmit', handler='handlers.DataSubmit', name='DataSubmit')
+]
+deviceAPI = WSGIApplication(routes2, config=app_config, debug=True)

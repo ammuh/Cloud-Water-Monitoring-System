@@ -11,7 +11,7 @@ float temperature;
 //Libs for JSON Parse
 #include <FluxJsonParse.h>
 boolean isFirst;
-String uId = "2Ohtk17Pe9-1";
+String uId = "120749ufjo";
 String clientToken;
 FluxJsonParse jsonEngine(uId, String("time"),String("florRate"),String("mlUsed"),String("temperature"));
 //Libs for SD
@@ -36,8 +36,8 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 #define IDLE_TIMEOUT  3000
 #define WEBSITE      "flux-plant.appspot.com"
-#define NEWSESSION      "/device/NewSession"
-#define DATASESSION      "/_ah/api/fluxplant/v1/DataSubmit"
+#define NEWSESSION      "/_ah_api/fluxplant/v1/NewSession"
+#define DATASESSION      "/_ah_api/fluxplant/v1/DataSubmit"
 uint32_t ip;
 
 
@@ -119,9 +119,12 @@ void setup() {
     pnt("Sd did not initialize");
     return;
   }
-  flushJson();
-  flushHttp();
-  flushHttpr();
+  if(SD.exists("json.txt")){
+    boolean check = SD.remove("json.txt");
+    if (check) {
+    pnt("Existing JSON removed");
+    }
+  }
   pnt("Initialization complete");
   //JSON Engine Init
 }
@@ -139,11 +142,8 @@ void loop(){
       flushJson();
       jstore(jsonEngine.newSession());
       writeHTTP(String("POST"), WEBSITE, NEWSESSION, jsonStore.size());
-      pnt("Dumping to client");
       dumpToClient();
-      pnt("Searching for clientToken");
       clientToken= findAttr("clientToken");
-      pnt(clientToken);
       isFirst = true;
       oldTime = millis();
     }
@@ -217,24 +217,6 @@ void flushJson(void)
     boolean check = SD.remove("json.txt");
     if (check) {
     pnt("Existing JSON removed");
-    }
-  }
-}
-void flushHttp(void)
-{
-  if(SD.exists("http.txt")){
-    boolean check = SD.remove("http.txt");
-    if (check) {
-    pnt("Existing http removed");
-    }
-  }
-}
-void flushHttpr(void)
-{
-  if(SD.exists("httpr.txt")){
-    boolean check = SD.remove("httpr.txt");
-    if (check) {
-    pnt("Existing httpr removed");
     }
   }
 }
@@ -326,8 +308,8 @@ void writeHTTP (String method, String host, String webpage, int bodyLength)
   httpRequest.println("Host: " + host);
   httpRequest.print("Content-Length: ");
   httpRequest.println(bodyLength);
-  //httpRequest.println("User-Agent: Arduino/1.0");
-  //httpRequest.println("Connection: close");
+  httpRequest.println("User-Agent: Arduino/1.0");
+  httpRequest.println("Connection: close");
   httpRequest.println("Content-Type: application/json");
   httpRequest.println();
   httpRequest.close();
@@ -353,12 +335,17 @@ void writeHTTP (String method, String host, String webpage, int bodyLength)
       pnt("Error");
     } 
   jsonStore.close();
-  }
+}
 }
 //Writes HTTP Request To Client
 void dumpToClient()
 {
-  flushHttpr();
+  if(SD.exists("httpr.txt")){
+    boolean check = SD.remove("httpr.txt");
+    if (check) {
+    pnt("Existing HTTPR removed");
+    }
+  }
   Adafruit_CC3000_Client www = cc3000.connectTCP(ip, 80);
   if (www.connected()) 
   {
@@ -414,9 +401,9 @@ String findAttr(String attr)
   {   
     int a =(byte)httpResponse.peek();
     char c = char(a);
-    if (charBuf[i] == c) {
+    if charBuf[i] == c {
       i++;
-      if (i == attr.length())
+      if i == attr.length()
       {
         found == true;
         int pos = httpResponse.position() + 5;
