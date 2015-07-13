@@ -33,10 +33,12 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 #define WLAN_PASS       "ammar123"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 #define IDLE_TIMEOUT  3000
-#define WEBSITE      "posttestserver.com"
-#define WEBPAGE      "/post.php"
+#define WEBSITE      "flux-plant.appspot.com/_ah_api/fluxplant/v1"
+#define NEWSESSION      "/NewSession"
+#define DATASESSION      "/DataSubmit"
 uint32_t ip;
-
+String uniqueId;
+String clientToken;
 //Button variables
 int buttonPin = 4;   // choose the input pin (for a pushbutton)
 boolean state; // variable for reading the pin status

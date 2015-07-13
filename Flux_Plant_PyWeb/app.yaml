@@ -10,8 +10,14 @@ handlers:
 - url: /_ah/spi/.*
   script: fluxplant_api.APPLICATION
 #WebApp 2 Pointer
-- url: /.*
-  script: fluxplant.app
+- url: /fp/.*
+  script: main.app
+  secure: always
+
+- url: /login
+  mime_type: text/html
+  static_files: static/pages/examples/login.html
+  upload: static/pages/examples/login\.html
 
 #Static Files
 - url: /(.*\.html)
@@ -35,3 +41,15 @@ libraries:
   version: latest
 - name: endpoints
   version: 1.0
+- name: webapp2
+  version: "2.5.2"
+- name: webob
+  version: "1.2.3"
+- name: markupsafe
+  version: "0.15"
+- name: setuptools
+  version: "0.6c11"
+- name: jinja2
+  version: "2.6"
+- name: lxml
+  version: "2.3"
