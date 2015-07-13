@@ -9,15 +9,14 @@ OneWire ds(6);
 float temperature;
 
 //Libs for JSON Parse
-#include <JsonParse.h>
-JsonParse jsonEngine(String("Time"),String("Flow_Rate"),String("ML_Used"),String("Temperature"));
+#include <FluxJsonParse.h>
 boolean isFirst;
-
 //Libs for SD
 #include <SPI.h>
 #include <SD.h>
 File jsonStore;
 File httpRequest;
+File httpResponse;
 
 //Libs for Wifi
 #include <Adafruit_CC3000.h>
@@ -33,9 +32,9 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 #define WLAN_PASS       "ammar123"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 #define IDLE_TIMEOUT  3000
-#define WEBSITE      "flux-plant.appspot.com/_ah_api/fluxplant/v1"
-#define NEWSESSION      "/NewSession"
-#define DATASESSION      "/DataSubmit"
+#define WEBSITE      "flux-plant.appspot.com"
+#define NEWSESSION      "/_ah_api/fluxplant/v1/NewSession"
+#define DATASESSION      "/_ah_api/fluxplant/v1/DataSubmit"
 uint32_t ip;
 String uniqueId;
 String clientToken;
@@ -58,6 +57,7 @@ unsigned long oldTime = 0;
 
 void setup() {
   Serial.begin(115200);
+
   pnt(F("\nInitializing..."));
   if (!cc3000.begin())
   {
@@ -100,8 +100,6 @@ void setup() {
 
   cc3000.printIPdotsRev(ip);
   
-  //Serial Setup
-  
   //Pushbutton Setup
   pinMode(buttonPin, INPUT);    // declare pushbutton as input
   state = false;
@@ -125,6 +123,8 @@ void setup() {
     }
   }
   pnt("Initialization complete");
+  //JSON Engine Init
+  FluxJsonParse jsonEngine(uId, String("time"),String("florRate"),String("mlUsed"),String("temperature"));
 }
 
 void loop(){  
@@ -137,7 +137,11 @@ void loop(){
       lastpress = millis();
       //TODO Request Session ID
       //TODO start SD file and write first part of JSON
-      jstore(jsonEngine.jsonHead(1135));
+      flushJson();
+      jstore(jsonEngine.newSession());
+      writeHTTP(String("POST"), WEBSITE, NEWSESSION, jsonStore.size());
+      dumpToClient();
+      clientToken= findAttr("clientToken");
       isFirst = true;
       oldTime = millis();
     }
@@ -146,28 +150,28 @@ void loop(){
   {
     //Measurement Process
     if((millis() - oldTime) > 1000)    // Only process counters once per second
-          { 
-            //Flow Meter Conversions
-            detachInterrupt(sensorInterrupt);           
-            flowMilliLitres  = ((1000.0 / (millis() - oldTime)) * pulseCount * 1000) / (60 * calibrationFactor);
-            oldTime = millis();
-            totalMilliLitres += flowMilliLitres;
-            //Temp Sensor Conversions
-            temperature = getTemp();
-            //TODO Add in JSON Write
-            jstore(jsonEngine.jsonAdd(String(millis()),String(flowMilliLitres),String(totalMilliLitres),String(temperature), isFirst));
-            pnt("Time: " + String(millis()));
-            pnt("Flow Rate: " + String(flowMilliLitres));
-            pnt("Total Used: " + String(totalMilliLitres));
-            pnt("Temperature: " + String(temperature));
-            pnt("");
-            isFirst = false; //Sets json lib so that wont at extra spaces and commas
-            oldTime = millis(); 
-            pulseCount = 0;
-            attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
-          }
-     if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>1000)
-     {
+    { 
+      //Flow Meter Conversions
+      detachInterrupt(sensorInterrupt);           
+      flowMilliLitres  = ((1000.0 / (millis() - oldTime)) * pulseCount * 1000) / (60 * calibrationFactor);
+      oldTime = millis();
+      totalMilliLitres += flowMilliLitres;
+      //Temp Sensor Conversions
+      temperature = getTemp();
+      //TODO Add in JSON Write
+      jstoreln(jsonEngine.jsonAdd(String(millis()),String(flowMilliLitres),String(totalMilliLitres),String(temperature), isFirst));
+      pnt("Time: " + String(millis()));
+      pnt("Flow Rate: " + String(flowMilliLitres));
+      pnt("Total Used: " + String(totalMilliLitres));
+      pnt("Temperature: " + String(temperature));
+      pnt("");
+      isFirst = false; //Sets json lib so that wont at extra spaces and commas
+      oldTime = millis(); 
+      pulseCount = 0;
+      attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
+    }
+    if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>1000)
+    {
       pnt("Button Press");
       state = false;
       lastpress = millis();
@@ -175,71 +179,28 @@ void loop(){
       pnt("Final Data");
       jsonStore = SD.open("json.txt");
       int bodyLength = jsonStore.size();
-        if(!jsonStore.seek(0)){
-              pnt("error");
-            }
-          while (jsonStore.available()) {   
-            int a =(byte)jsonStore.peek();
-            char c = char(a);
-            String str;
-            int pos = jsonStore.position() + 1;
-            if(!jsonStore.seek(pos)){
-              pnt("error");
-            }
-           Serial.print(c);        
-          }
-       pnt("Building HTTP request");
-       writeHTTP("POST", WEBSITE, WEBPAGE, bodyLength, true);
-      Adafruit_CC3000_Client www = cc3000.connectTCP(ip, 80);
-      if (www.connected()) {
-        pnt("Connection Established");
-        /*jsonStore = SD.open("json.txt");
-        if(!jsonStore.seek(0)){
-              pnt("error");
-            }
-          while (jsonStore.available()) {   
-            int a =(byte)jsonStore.peek();
-            char c = char(a);
-            String str;
-            int pos = jsonStore.position() + 1;
-            if(!jsonStore.seek(pos)){
-              pnt("error");
-            }
-           www.write(c);        
-          }
-         jsonStore.close();*/
-         
-         httpRequest = SD.open("http.txt");
-        if(!httpRequest.seek(0)){
-              pnt("error");
-            }
-          while (httpRequest.available()) {   
-            int a =(byte)httpRequest.peek();
-            char c = char(a);
-            int pos = httpRequest.position() + 1;
-            if(!httpRequest.seek(pos)){
-              pnt("error");
-            }
-           www.write(c);        
-          }
-          pnt("While Loop Finished");
-         httpRequest.close();
-         www.println();
-      }       
-      unsigned long lastRead = millis();
-      while (www.connected() && (millis() - lastRead < IDLE_TIMEOUT)) {
-        while (www.available()) {
-          char c = www.read();
-          Serial.print(c);
-          lastRead = millis();
-        }
+      if(!jsonStore.seek(0))
+      {
+        pnt("error");
       }
-      www.close();
-      
+      while (jsonStore.available()) 
+      {   
+        int a =(byte)jsonStore.peek();
+        char c = char(a);
+        String str;
+        int pos = jsonStore.position() + 1;
+        if(!jsonStore.seek(pos))
+        {
+          pnt("error");
+        }
+       Serial.print(c);        
+      }
+      pnt("Building HTTP request");
+      writeHTTP("POST", WEBSITE, DATASESSION, bodyLength);
+      dumpToClient();
     }
   }
 }
-
 /*Extra Methods*/
 
 //For Flow Meter
@@ -247,17 +208,35 @@ void pulseCounter()
 {
   pulseCount++;
 }
-//For Logging to SD log
-void jstore(String msg)
+//JSON Body Creation
+void flushJson(void)
+{
+  if(SD.exists("json.txt")){
+    boolean check = SD.remove("json.txt");
+    if (check) {
+    pnt("Existing JSON removed");
+    }
+  }
+}
+void jstoreln(String msg)
 {
   jsonStore = SD.open("json.txt", FILE_WRITE);
   jsonStore.println(msg);
   jsonStore.close();
 }
+void jstore(String msg)
+{
+  jsonStore = SD.open("json.txt", FILE_WRITE);
+  jsonStore.print(msg);
+  jsonStore.close();
+}
+//Serial Logging
 void pnt (String msg) {
   Serial.println(msg);
 }
-float getTemp(){
+
+float getTemp(void)
+{
   //returns the temperature from one DS18S20 in DEG Celsius
 
   byte data[12];
@@ -291,9 +270,8 @@ float getTemp(){
   float TemperatureSum = tempRead / 16;
   
   return TemperatureSum;
-  
 }
-//wifi Methods
+//WifiMethods
 bool displayConnectionDetails(void)
 {
   uint32_t ipAddress, netmask, gateway, dhcpserv, dnsserv;
@@ -315,7 +293,8 @@ bool displayConnectionDetails(void)
   }
 }
 //Create HTTP request
-void writeHTTP (String method, String host, String webpage, int bodyLength, bool addJson) {
+void writeHTTP (String method, String host, String webpage, int bodyLength) 
+{
   if(SD.exists("http.txt")){
     boolean check = SD.remove("http.txt");
     if (check) {
@@ -329,19 +308,15 @@ void writeHTTP (String method, String host, String webpage, int bodyLength, bool
   httpRequest.println(bodyLength);
   httpRequest.println("User-Agent: Arduino/1.0");
   httpRequest.println("Connection: close");
-  if (addJson) {
-    httpRequest.println("Content-Type: application/json");
-  }
-  else {
-    httpRequest.println("Content-Type: application/xml");
-  }
+  httpRequest.println("Content-Type: application/json");
   httpRequest.println();
   httpRequest.close();
-  if (addJson) {
+
   jsonStore = SD.open("json.txt");
   int pos = 0;
-    while (jsonStore.available()) {
-      if(!jsonStore.seek(pos)){
+  while (jsonStore.available()) {
+      if(!jsonStore.seek(pos))
+      {
         pnt("Error");
       }   
       int a =(byte)jsonStore.peek();
@@ -355,12 +330,103 @@ void writeHTTP (String method, String host, String webpage, int bodyLength, bool
       if(!jsonStore.seek(pos - 1)){
         pnt("Error");
       } 
+  jsonStore.close();
+}
+//Writes HTTP Request To Client
+void dumpToClient(void)
+{
+  if(SD.exists("httpr.txt")){
+    boolean check = SD.remove("httpr.txt");
+    if (check) {
+    pnt("Existing HTTPR removed");
     }
- jsonStore.close();
   }
-  else {
-    httpRequest = SD.open("http.txt", FILE_WRITE);
-    httpRequest.print("<MESSAGE>Hello World</MESSAGE>");
+  Adafruit_CC3000_Client www = cc3000.connectTCP(ip, 80);
+  if (www.connected()) 
+  {
+    pnt("Connection Established");
+    httpRequest = SD.open("http.txt");
+    if(!httpRequest.seek(0))
+    {
+      pnt("error");
+    }
+    while (httpRequest.available()) 
+    {   
+      int a =(byte)httpRequest.peek();
+      char c = char(a);
+      int pos = httpRequest.position() + 1;
+      if(!httpRequest.seek(pos))
+      {
+        pnt("error");
+      }
+      www.write(c);        
+    }
+    pnt("While Loop Finished");
     httpRequest.close();
+    www.println();
   }
+  httpResponse = SD.open("httpr.txt");
+  unsigned long lastRead = millis();
+  while (www.connected() && (millis() - lastRead < IDLE_TIMEOUT)) 
+  {
+    while (www.available()) {
+      char c = www.read();
+      Serial.print(c);
+      httpResponse.print(c);
+      lastRead = millis();
+    }
+  }
+  httpResponse.close();
+  www.close();
+}
+//Finds Attribute in JSON body of certain key
+String findAttr(String attr)
+{
+  int i = 0;
+  char charBuf[attr.length()+1];
+  bool found = false;
+  String val = "";
+  attr.toCharArray(charBuf, attr.length())
+  httpResponse = SD.open("httpr.txt");
+  if(!httpResponse.seek(0))
+  {
+    pnt("error");
+  }
+  while (httpResponse.available() && found == false) 
+  {   
+    int a =(byte)httpResponse.peek();
+    char c = char(a);
+    if charBuf[i] == c {
+      i++;
+      if i == attr.length()
+      {
+        found == true;
+        int pos = httpResponse.position() + 5;
+        if(!httpResponse.seek(pos))
+        {
+          pnt("error");
+        }
+        char ck =' ';
+        while(ck != '\"')
+        {
+          val += String(char((byte)httpResponse.peek()));
+          int pos = httpResponse.position() + 1;
+          if(!httpResponse.seek(pos))
+          {
+            pnt("error");
+          }
+        }
+      }
+    }
+    else
+    {
+      i = 0;
+    }
+    int pos = httpResponse.position() + 1;
+    if(!httpResponse.seek(pos))
+    {
+      pnt("error");
+    }     
+  }
+  return val
 }
