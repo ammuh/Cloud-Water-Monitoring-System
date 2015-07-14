@@ -383,18 +383,20 @@ void dumpToClient()
     httpRequest.close();
     www.println();
   }
-  httpResponse = SD.open("httpr.txt");
+  
   unsigned long lastRead = millis();
   while (www.connected() && (millis() - lastRead < IDLE_TIMEOUT)) 
   {
     while (www.available()) {
       char c = www.read();
       Serial.print(c);
+      httpResponse = SD.open("httpr.txt", FILE_WRITE);
       httpResponse.print(c);
+      httpResponse.close();
       lastRead = millis();
     }
   }
-  httpResponse.close();
+  
   www.close();
 }
 //Finds Attribute in JSON body of certain key
@@ -405,10 +407,12 @@ String findAttr(String attr)
   bool found = false;
   String val = "";
   attr.toCharArray(charBuf, attr.length());
+  pnt("Char converted, Here is Test");
+  pnt(String(charBuf[0]));
   httpResponse = SD.open("httpr.txt");
   if(!httpResponse.seek(0))
   {
-    pnt("error");
+    pnt("Initial Seek Error");
   }
   while (httpResponse.available() && found == false) 
   {   
@@ -422,7 +426,7 @@ String findAttr(String attr)
         int pos = httpResponse.position() + 5;
         if(!httpResponse.seek(pos))
         {
-          pnt("error");
+          pnt("While Seek Error");
         }
         char ck =' ';
         while(ck != '\"')
@@ -439,12 +443,14 @@ String findAttr(String attr)
     else
     {
       i = 0;
+      pnt("else entered");
     }
     int pos = httpResponse.position() + 1;
     if(!httpResponse.seek(pos))
     {
       pnt("error");
-    }     
+    }
+    pnt(String(pos));    
   }
   return val;
 }

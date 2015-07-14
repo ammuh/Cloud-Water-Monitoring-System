@@ -7,8 +7,6 @@ from protorpc import remote
 from request_models import RegSensorForm
 from request_models import snsTypes
 from request_models import RegSensorResponse
-from request_models import newSessionForm
-from request_models import newSessionResponse
 from request_models import sessionDataRaw
 from request_models import sessionDataSubmit
 from request_models import sessionDataSubResponse
@@ -34,12 +32,13 @@ import string
 #import auth_util
 #OAUTH
 from google.appengine.api import oauth
+#Logic
+from fluxlogic import _SensorReg
+from fluxlogic import _NewData
 WEB_CLIENT_ID = 'replace this with your web client application ID'
 ANDROID_CLIENT_ID = 'replace this with your Android client ID'
 IOS_CLIENT_ID = 'replace this with your iOS client ID'
 ANDROID_AUDIENCE = WEB_CLIENT_ID
-
-package = 'Hello'
 
 @endpoints.api(name='fluxplant', version='v1', scopes=[endpoints.EMAIL_SCOPE])
 class FluxPlantApi(remote.Service):
@@ -49,49 +48,25 @@ class FluxPlantApi(remote.Service):
   @endpoints.method(RegSensorForm, RegSensorResponse, path='RegSensor', http_method='POST', name='sensors.RegSensor')
   def RegSensor(self, request):
     #TODO: Add functionality to store all request data in datastore
-    privacy="Private"
-    
+    privacy="Private" 
+    senstype=""
     if request.sensorType.fluid == True and request.sensorType.temperature == True:
       senstype="Fluid and Temperature"
     elif request.sensorType.fluid == True and request.sensorType.temperature == False:
       senstype="Fluid"
-    elif request.sensorType.fluid == False and request.sensorType.temperature == True:
+    elif request.sensorType.fluid == False and request.sensodrype.temperature == True:
       senstype="Temperature"
-    sensId= FluxSensors.allocate_ids(size=1)[0]
-    sensorKey= ndb.Key('FluxSensors', sensId)
-    rando = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(10)])
-    conId= rando + "-" + str(sensId)
-    newSensor= FluxSensors(key= sensorKey, Ip=request.ip, ConsumId=conId, Type=senstype, Privacy=privacy)
-    newSensor.put()
-     #TODO create unique id and return in body
+    attrs = {'Ip':request.ip, 'Type': senstype, 'Privacy': privacy, 'ConsumId': request.uniqueId, 'mac':request.mac}
+    conId=_SensorReg(attrs)
     #TODO save key in datastore
     return RegSensorResponse(uniqueId= str(conId), senstype=senstype)
 
-  @endpoints.method(newSessionForm, newSessionResponse, path='NewSession', http_method='POST', name='sessions.New')
-  def NewSession(self, request):
-    #TODO Create New Session Key
-    sensor = FluxSensors.query(FluxSensors.ConsumId == request.uniqueId).fetch(1)[0]
-    sensKey= sensor.key
-    sessId = FluxSessions.allocate_ids(size=1, parent=sensKey)[0]
-    sessKey= ndb.Key(FluxSessions, sessId, parent=sensKey)
-
-    rando = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(10)])
-    cId= rando + "-" + str(sessId)
-
-    newSession= FluxSessions(key=sessKey, uId=request.uniqueId, clientToken=cId)
-    newSession.put()
-
-    #Save Session Key in Datastore along with provided Unique ID
-    #Return Session Key
-    return newSessionResponse(clientToken=cId)
-
   @endpoints.method(sessionDataSubmit, sessionDataSubResponse, path='DataSubmit', http_method='POST', name='sessions.DataSubmit')
   def DataSubmit(self, request):
-    session = FluxSessions.query(FluxSessions.clientToken == request.clientToken).fetch(1)[0]
-    temp=3
-    mlUsed=123
-    runningTotal=0
+    temp=0
+    mlUsed=0
     if request.datatype == dataTypes.JSON:
+      runningTotal=0
       for i in xrange(len(request.rawData)):
         runningTotal+= request.rawData[i].temperature
       temp= runningTotal/(len(request.rawData))
@@ -99,10 +74,13 @@ class FluxPlantApi(remote.Service):
     else:
       mlUsed= request.aggData.mlUsed
       temp= request.aggData.avgTemperature
-    session.AverageTemp= temp
-    session.mlUsed= mlUsed
-    session.put()
-    return sessionDataSubResponse(status="Some Response Status", dataview="Link to data")
+    state= _NewData(request.uniqueId, temp, mlUsed)
+    response = sessionDataSubResponse()
+    if state:
+      response.status= "Success"
+    else:
+      response.status= "Fail"
+    return response
   #Session and Submit Data
   #Aggregating SensorData and returning in JSON dataset
   @endpoints.method(SensorDataForm, SensorDataResponse, path='GetSensData', http_method='POST', name='sessions.GetSensData')

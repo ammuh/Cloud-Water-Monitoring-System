@@ -17,13 +17,6 @@ class RegSensorResponse(messages.Message):
   uniqueId = messages.StringField(1)
   senstype = messages.StringField(2)
 
-#Handling New Sessions
-class newSessionForm(messages.Message):
-  uniqueId= messages.StringField(1, required=True)
-
-class newSessionResponse(messages.Message):
-  clientToken= messages.StringField(1)
-
 #Handling Session Data
 class dataTypes(messages.Enum):
   JSON = 1
@@ -41,7 +34,6 @@ class sessionDataAgg(messages.Message):
 
 class sessionDataSubmit(messages.Message):
   uniqueId= messages.StringField(1, required=True)
-  clientToken= messages.StringField(2, required=True)
   datatype= messages.EnumField(dataTypes, 3, required=True)
   rawData= messages.MessageField(sessionDataRaw, 4, repeated=True)
   aggData= messages.MessageField(sessionDataAgg, 5)

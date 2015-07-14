@@ -9,6 +9,10 @@ from webapp2_extras import auth, sessions, jinja2
 from jinja2.runtime import TemplateNotFound
 from simpleauth import SimpleAuthHandler
 
+from fluxlogic import _SensorReg
+from fluxlogic import _NewData
+from request_models import dataTypes
+
 import json
 
 class BaseRequestHandler(webapp2.RequestHandler):
@@ -187,9 +191,25 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
 
 class NewSession(webapp2.RequestHandler):
   def post(self):
-    #s = json.loads(self.request.body)
-    #uId= s.get("uniqueId")
-    self.response.body = "{\"clientToken\":\"3209ruf099r\"}"
+    b = json.loads(self.request.body)
+    temp=0
+    mlUsed=0
+    if b['datatype'] == 'JSON':
+      runningTotal=0
+      for i in xrange(len(b['rawData'])):
+        runningTotal+= b['rawData'][i]['temperature']
+      temp= runningTotal/(len(b['rawData']))
+      mlUsed= b['rawData'][len(b['rawData'])-1]['temperature']
+    else:
+      mlUsed= b['aggData']['mlUsed']
+      temp= b['aggData']['avgTemperature']
+    state = _NewData(b.get("uniqueId"), temp, mlUsed)
+    status=""
+    if state:
+      status="Success"
+    else:
+      status="Failure"
+    self.response.write(status)
   
 
 class DataSubmit(object):

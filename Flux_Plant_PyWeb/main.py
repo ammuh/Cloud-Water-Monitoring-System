@@ -9,7 +9,6 @@ from webapp2 import WSGIApplication, Route
 if 'lib' not in sys.path:
     sys.path[0:0] = ['lib']
 
-
 # webapp2 config
 app_config = {
   'webapp2_extras.sessions': {
