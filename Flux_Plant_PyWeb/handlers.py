@@ -189,7 +189,7 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     """
     return secrets.AUTH_CONFIG[provider]
 
-class NewSession(webapp2.RequestHandler):
+class DataSubmit(webapp2.RequestHandler):
   def post(self):
     b = json.loads(self.request.body)
     temp=0
@@ -210,10 +210,5 @@ class NewSession(webapp2.RequestHandler):
     else:
       status="Failure"
     self.response.write(status)
-  
 
-class DataSubmit(object):
-  def post(self):
-    logging.debug("DataSubmited")
-    self.redirect('/login')
     

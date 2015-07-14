@@ -34,7 +34,6 @@ webapp = WSGIApplication(routes, config=app_config, debug=True)
 #Device App handler
 
 routes2 = [
- Route('/device/NewSession', handler='handlers.NewSession', name='NewSession'),
  Route('/device/DataSubmit', handler='handlers.DataSubmit', name='DataSubmit')
 ]
 deviceAPI = WSGIApplication(routes2, config=app_config, debug=True)

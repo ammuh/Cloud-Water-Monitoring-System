@@ -11,8 +11,7 @@ float temperature;
 //Libs for JSON Parse
 #include <FluxJsonParse.h>
 boolean isFirst;
-String uId = "2Ohtk17Pe9-1";
-String clientToken;
+String uId = "Cp2ZST1j6t-3009";
 FluxJsonParse jsonEngine(uId, String("time"),String("florRate"),String("mlUsed"),String("temperature"));
 //Libs for SD
 #include <SPI.h>
@@ -37,7 +36,7 @@ Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ
 #define IDLE_TIMEOUT  3000
 #define WEBSITE      "flux-plant.appspot.com"
 #define NEWSESSION      "/device/NewSession"
-#define DATASESSION      "/_ah/api/fluxplant/v1/DataSubmit"
+#define DATASESSION      "/device/DataSubmit"
 uint32_t ip;
 
 
@@ -137,13 +136,6 @@ void loop(){
       //TODO Request Session ID
       //TODO start SD file and write first part of JSON
       flushJson();
-      jstore(jsonEngine.newSession());
-      writeHTTP(String("POST"), WEBSITE, NEWSESSION, jsonStore.size());
-      pnt("Dumping to client");
-      dumpToClient();
-      pnt("Searching for clientToken");
-      clientToken= findAttr("clientToken");
-      pnt(clientToken);
       isFirst = true;
       oldTime = millis();
     }
@@ -400,6 +392,7 @@ void dumpToClient()
   www.close();
 }
 //Finds Attribute in JSON body of certain key
+/*
 String findAttr(String attr)
 {
   int i = 0;
@@ -454,3 +447,4 @@ String findAttr(String attr)
   }
   return val;
 }
+*/
