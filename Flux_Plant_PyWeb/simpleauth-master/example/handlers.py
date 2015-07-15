@@ -114,39 +114,6 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
       'image': lambda img: ('avatar_url', img.get('url', DEFAULT_AVATAR_URL)),
       'displayName': 'name',
       'url': 'link'
-    },
-    'windows_live': {
-      'avatar_url': 'avatar_url',
-      'name': 'name',
-      'link': 'link'
-    },
-    'twitter': {
-      'profile_image_url': 'avatar_url',
-      'screen_name': 'name',
-      'link': 'link'
-    },
-    'linkedin': {
-      'picture-url': 'avatar_url',
-      'first-name': 'name',
-      'public-profile-url': 'link'
-    },
-    'linkedin2': {
-      'picture-url': 'avatar_url',
-      'first-name': 'name',
-      'public-profile-url': 'link'
-    },
-    'foursquare': {
-      'photo': lambda photo: ('avatar_url', photo.get('prefix') + '100x100'\
-                                          + photo.get('suffix')),
-      'firstName': 'firstName',
-      'lastName': 'lastName',
-      'contact': lambda contact: ('email', contact.get('email')),
-      'id': lambda id: ('link', FOURSQUARE_USER_LINK.format(id))
-    },
-    'openid': {
-      'id': lambda id: ('avatar_url', DEFAULT_AVATAR_URL),
-      'nickname': 'name',
-      'email': 'link'
     }
   }
 
@@ -163,7 +130,8 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     logging.debug('Looking for a user with id %s', auth_id)
     user = self.auth.store.user_model.get_by_auth_id(auth_id)
     _attrs = self._to_user_model_attrs(data, self.USER_ATTRS[provider])
-    self.auth.set_session(self.auth.store.user_to_dict(user))
+    _attrs['email']= "test@email.com"
+
     if user:
       logging.debug('Found existing user to log in')
       # Existing users might've changed their profile data so we update our
@@ -237,3 +205,5 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
       user_attrs.setdefault(*attr)
 
     return user_attrs
+  def _test(self, data, auth_info, extra=None):
+    pass
