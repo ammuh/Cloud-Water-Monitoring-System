@@ -16,7 +16,7 @@ app_config = {
     'secret_key': SESSION_KEY
   },
   'webapp2_extras.auth': {
-    'user_model': Users,
+    'user_model': Users
   }
 }
 
@@ -26,7 +26,7 @@ routes = [
  Route('/fp/profile', handler='handlers.ProfileHandler', name='profile'),
  Route('/fp/auth/<provider>', handler='handlers.AuthHandler:_simple_auth', name='auth_login'),
  Route('/fp/auth/<provider>/callback', handler='handlers.AuthHandler:_auth_callback', name='auth_callback'),
- Route('/fp/logout', handler='handlers.AuthHandler:logout', name='logout'),
+ Route('/fp/logout', handler='handlers.AuthHandler:logout', name='logout')
 ]
 
 webapp = WSGIApplication(routes, config=app_config, debug=True)

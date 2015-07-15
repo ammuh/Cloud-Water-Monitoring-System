@@ -75,8 +75,10 @@ class BaseRequestHandler(webapp2.RequestHandler):
 
 class RootHandler(BaseRequestHandler):
   def get(self):
-    """Handles default landing page"""
-    self.render('home.html', {'destination_url': '/profile'})
+    if self.logged_in:
+      self.redirect('/profile')
+    else:
+      self.redirect('/')
 
 class ProfileHandler(BaseRequestHandler):
   def get(self):
@@ -87,13 +89,13 @@ class ProfileHandler(BaseRequestHandler):
         'session': self.auth.get_user_by_session()
       })
     else:
-      self.redirect('/login')
+      self.redirect('/')
 
 class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
   """Authentication handler for all kinds of auth."""
   OAUTH2_CSRF_STATE = True
 
- USER_ATTRS = {
+  USER_ATTRS = {
     'facebook': {
       'id': lambda id: ('avatar_url', FACEBOOK_AVATAR_URL.format(id)),
       'name': 'name',

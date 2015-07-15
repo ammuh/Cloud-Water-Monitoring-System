@@ -36,8 +36,7 @@ FOURSQUARE_CLIENT_SECRET = 'client secret'
 # config that summarizes the above
 AUTH_CONFIG = {
   # OAuth 2.0 providers
-  'google': (GOOGLE_APP_ID, GOOGLE_APP_SECRET,
-             'https://www.googleapis.com/auth/userinfo.profile'),
+  'google': (GOOGLE_APP_ID, GOOGLE_APP_SECRET, 'email'),
   'googleplus': (GOOGLE_APP_ID, GOOGLE_APP_SECRET, 'profile'),
   'linkedin2': (LINKEDIN_KEY, LINKEDIN_SECRET, 'r_basicprofile'),
   'facebook': (FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, 'user_about_me'),
