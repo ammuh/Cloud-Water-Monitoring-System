@@ -7,7 +7,7 @@ from data_manage import Users
 # inject './lib' dir in the path so that we can simply do "import ndb"
 # or whatever there's in the app lib dir.
 if 'lib' not in sys.path:
-    sys.path[0:0] = ['lib']
+  sys.path[0:0] = ['lib']
 
 # webapp2 config
 app_config = {
@@ -23,10 +23,10 @@ app_config = {
 
 # Map URLs to handlers
 routes = [
- Route('/fp/profile', handler='handlers.ProfileHandler', name='profile'),
- Route('/fp/auth/<provider>', handler='handlers.AuthHandler:_simple_auth', name='auth_login'),
- Route('/fp/auth/<provider>/callback', handler='handlers.AuthHandler:_auth_callback', name='auth_callback'),
- Route('/fp/logout', handler='handlers.AuthHandler:logout', name='logout')
+	Route('/fp/profile', handler='handlers.ProfileHandler', name='profile'),
+	Route('/fp/auth/<provider>', handler='handlers.AuthHandler:_simple_auth', name='auth_login'),
+	Route('/fp/auth/<provider>/callback', handler='handlers.AuthHandler:_auth_callback', name='auth_callback'),
+	Route('/fp/logout', handler='handlers.AuthHandler:logout', name='logout')
 ]
 
 webapp = WSGIApplication(routes, config=app_config, debug=True)
@@ -34,6 +34,6 @@ webapp = WSGIApplication(routes, config=app_config, debug=True)
 #Device App handler
 
 routes2 = [
- Route('/device/DataSubmit', handler='handlers.DataSubmit', name='DataSubmit')
+	Route('/device/DataSubmit', handler='handlers.DataSubmit', name='DataSubmit')
 ]
 deviceAPI = WSGIApplication(routes2, config=app_config, debug=True)
