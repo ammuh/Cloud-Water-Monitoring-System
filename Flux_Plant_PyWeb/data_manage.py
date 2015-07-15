@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+import webapp2_extras.appengine.auth.models as auth_models
 
 #class FLuxUser(ndb.Model):
   # Sensor Entity Group
@@ -21,7 +22,7 @@ class FluxSessions(ndb.Model):
   AverageTemp= ndb.FloatProperty()
   mlUsed= ndb.FloatProperty()
 #User Class
-class Users(ndb.Model):
+class Users(auth_models.User):
   email= ndb.StringProperty()
   username= ndb.StringProperty()
   userObj= ndb.UserProperty()

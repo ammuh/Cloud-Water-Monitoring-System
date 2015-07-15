@@ -108,7 +108,8 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     'google': {
       'picture': 'avatar_url',
       'name': 'name',
-      'profile': 'link'
+      'profile': 'link',
+      'email':'email'
     },
     'googleplus': {
       'image': lambda img: ('avatar_url', img.get('url', DEFAULT_AVATAR_URL)),
@@ -123,14 +124,13 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
      auth_info contains access token or oauth token and secret.
      extra is a dict with additional params passed to the auth init handler.
     """
-    logging.debug('Got user data: %s', data)
+    logging.debug('Got user data: %s', str(data))
 
     auth_id = '%s:%s' % (provider, data['id'])
 
     logging.debug('Looking for a user with id %s', auth_id)
     user = self.auth.store.user_model.get_by_auth_id(auth_id)
     _attrs = self._to_user_model_attrs(data, self.USER_ATTRS[provider])
-    _attrs['email']= "test@email.com"
 
     if user:
       logging.debug('Found existing user to log in')

@@ -2,7 +2,7 @@ import sys
 from secrets import SESSION_KEY
 
 from webapp2 import WSGIApplication, Route
-
+from data_manage import Users
 
 # inject './lib' dir in the path so that we can simply do "import ndb"
 # or whatever there's in the app lib dir.
@@ -16,7 +16,7 @@ app_config = {
     'secret_key': SESSION_KEY
   },
   'webapp2_extras.auth': {
-    'user_attributes': []
+    'user_model': Users,
   }
 }
 

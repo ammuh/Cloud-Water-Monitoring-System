@@ -5,7 +5,7 @@
 # http://clsc.net/tools/random-string-generator.php
 # or execute this from a python shell: import os; os.urandom(64)
 
-SESSION_KEY = "a very long and secret session key goes here"
+SESSION_KEY = "894H9jFUXP4b8F330znyjvI4LAXW53mc79NuNNQiw20bz3nBWn"
 
 # Google APIs
 GOOGLE_APP_ID = '774676905975-kfafeuubf6rdnrvkevsob6cp3qqcunf8.apps.googleusercontent.com'

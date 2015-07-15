@@ -73,11 +73,16 @@ class BaseRequestHandler(webapp2.RequestHandler):
     """Head is used by Twitter. If not there the tweet button shows 0"""
     pass
 
+class RootHandler(BaseRequestHandler):
+  def get(self):
+    """Handles default landing page"""
+    self.render('home.html', {'destination_url': '/profile'})
+
 class ProfileHandler(BaseRequestHandler):
   def get(self):
     """Handles GET /profile"""
     if self.logged_in:
-      self.render('index.html', {
+      self.render('profile.html', {
         'user': self.current_user,
         'session': self.auth.get_user_by_session()
       })
@@ -88,7 +93,7 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
   """Authentication handler for all kinds of auth."""
   OAUTH2_CSRF_STATE = True
 
-  USER_ATTRS = {
+ USER_ATTRS = {
     'facebook': {
       'id': lambda id: ('avatar_url', FACEBOOK_AVATAR_URL.format(id)),
       'name': 'name',
@@ -97,45 +102,13 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
     'google': {
       'picture': 'avatar_url',
       'name': 'name',
-      'profile': 'link'
+      'profile': 'link',
+      'email':'email'
     },
     'googleplus': {
       'image': lambda img: ('avatar_url', img.get('url', DEFAULT_AVATAR_URL)),
       'displayName': 'name',
       'url': 'link'
-    },
-    'windows_live': {
-      'avatar_url': 'avatar_url',
-      'name': 'name',
-      'link': 'link'
-    },
-    'twitter': {
-      'profile_image_url': 'avatar_url',
-      'screen_name': 'name',
-      'link': 'link'
-    },
-    'linkedin': {
-      'picture-url': 'avatar_url',
-      'first-name': 'name',
-      'public-profile-url': 'link'
-    },
-    'linkedin2': {
-      'picture-url': 'avatar_url',
-      'first-name': 'name',
-      'public-profile-url': 'link'
-    },
-    'foursquare': {
-      'photo': lambda photo: ('avatar_url', photo.get('prefix') + '100x100'\
-                                          + photo.get('suffix')),
-      'firstName': 'firstName',
-      'lastName': 'lastName',
-      'contact': lambda contact: ('email', contact.get('email')),
-      'id': lambda id: ('link', FOURSQUARE_USER_LINK.format(id))
-    },
-    'openid': {
-      'id': lambda id: ('avatar_url', DEFAULT_AVATAR_URL),
-      'nickname': 'name',
-      'email': 'link'
     }
   }
 
@@ -147,47 +120,84 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
 
     See what's in it with e.g. logging.info(auth_info)
     """
-    logging.info(data)
+    logging.debug('Got user data: %s', str(data))
+
     auth_id = '%s:%s' % (provider, data['id'])
 
-    # Possible flow:
-    # 
-    # 1. check whether user exist, e.g.
-    #    User.get_by_auth_id(auth_id)
-    #
-    # 2. create a new user if it doesn't
-    #    User(**data).put()
-    #
-    # 3. sign in the user
-    #    self.session['_user_id'] = auth_id
-    #
-    # 4. redirect somewhere, e.g. self.redirect('/profile')
-    #
-    # See more on how to work the above steps here:
-    # http://webapp-improved.appspot.com/api/webapp2_extras/auth.html
-    # http://code.google.com/p/webapp-improved/issues/detail?id=20
     logging.debug('Looking for a user with id %s', auth_id)
     user = self.auth.store.user_model.get_by_auth_id(auth_id)
     _attrs = self._to_user_model_attrs(data, self.USER_ATTRS[provider])
-    self.auth.set_session(self.auth.store.user_to_dict(user))
-    self.redirect('/fp/profile')
+
+    if user:
+      logging.debug('Found existing user to log in')
+      # Existing users might've changed their profile data so we update our
+      # local model anyway. This might result in quite inefficient usage
+      # of the Datastore, but we do this anyway for demo purposes.
+      #
+      # In a real app you could compare _attrs with user's properties fetched
+      # from the datastore and update local user in case something's changed.
+      user.populate(**_attrs)
+      user.put()
+      self.auth.set_session(self.auth.store.user_to_dict(user))
+
+    else:
+      # check whether there's a user currently logged in
+      # then, create a new user if nobody's signed in,
+      # otherwise add this auth_id to currently logged in user.
+
+      if self.logged_in:
+        logging.debug('Updating currently logged in user')
+
+        u = self.current_user
+        u.populate(**_attrs)
+        # The following will also do u.put(). Though, in a real app
+        # you might want to check the result, which is
+        # (boolean, info) tuple where boolean == True indicates success
+        # See webapp2_extras.appengine.auth.models.User for details.
+        u.add_auth_id(auth_id)
+
+      else:
+        logging.debug('Creating a brand new user')
+        ok, user = self.auth.store.user_model.create_user(auth_id, **_attrs)
+        if ok:
+          self.auth.set_session(self.auth.store.user_to_dict(user))
+
+    # user profile page
+    destination_url = '/profile'
+    if extra is not None:
+      params = webob.multidict.MultiDict(extra)
+      destination_url = str(params.get('destination_url', '/profile'))
+    return self.redirect(destination_url)
 
   def logout(self):
     self.auth.unset_session()
-    self.redirect('/login')
+    self.redirect('/')
+
+  def handle_exception(self, exception, debug):
+    logging.error(exception)
+    self.render('error.html', {'exception': exception})
 
   def _callback_uri_for(self, provider):
     return self.uri_for('auth_callback', provider=provider, _full=True)
 
   def _get_consumer_info_for(self, provider):
-    """Should return a tuple (key, secret) for auth init requests.
-    For OAuth 2.0 you should also return a scope, e.g.
-    ('my app/client id', 'my app/client secret', 'email,user_about_me')
-
-    The scope depends solely on the provider.
-    See example/secrets.py.template
-    """
+    """Returns a tuple (key, secret) for auth init requests."""
     return secrets.AUTH_CONFIG[provider]
+
+  def _get_optional_params_for(self, provider):
+    """Returns optional parameters for auth init requests."""
+    return secrets.AUTH_OPTIONAL_PARAMS.get(provider)
+    
+  def _to_user_model_attrs(self, data, attrs_map):
+    """Get the needed information from the provider dataset."""
+    user_attrs = {}
+    for k, v in attrs_map.iteritems():
+      attr = (v, data.get(k)) if isinstance(v, str) else v(data.get(k))
+      user_attrs.setdefault(*attr)
+
+    return user_attrs
+  def _test(self, data, auth_info, extra=None):
+    pass
 
 class DataSubmit(webapp2.RequestHandler):
   def post(self):
