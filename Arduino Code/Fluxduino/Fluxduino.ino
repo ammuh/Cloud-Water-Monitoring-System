@@ -11,7 +11,7 @@ float temperature;
 //Libs for JSON Parse
 #include <FluxJsonParse.h>
 boolean isFirst;
-String uId = "Cp2ZST1j6t-3009";
+String uId = "m136efsrTy-1000001";
 FluxJsonParse jsonEngine(uId, String("time"),String("florRate"),String("mlUsed"),String("temperature"));
 //Libs for SD
 #include <SPI.h>
@@ -30,11 +30,11 @@ File httpResponse;
 // On an UNO, SCK = 13, MISO = 12, and MOSI = 11
 Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,
                                          SPI_CLOCK_DIVIDER);
-#define WLAN_SSID       "Ammar's iPhone"           // cannot be longer than 32 characters!
-#define WLAN_PASS       "ammar123"
+#define WLAN_SSID       "ammu"           // cannot be longer than 32 characters!
+#define WLAN_PASS       "ammar1234"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
 #define IDLE_TIMEOUT  3000
-#define WEBSITE      "flux-plant.appspot.com"
+#define WEBSITE      "www.flux-plant.appspot.com"
 #define NEWSESSION      "/device/NewSession"
 #define DATASESSION      "/device/DataSubmit"
 uint32_t ip;
@@ -84,7 +84,7 @@ void setup() {
   {
     delay(100); // ToDo: Insert a DHCP timeout!
   }  
-
+  pnt("Checked");
   /* Display the IP address DNS, Gateway, etc. */  
   while (! displayConnectionDetails()) {
     delay(1000);
@@ -169,7 +169,6 @@ void loop(){
       pnt("Button Press");
       state = false;
       lastpress = millis();
-      jstore(jsonEngine.jsonCap());
       pnt("Final Data");
       jsonStore = SD.open("json.txt");
       int bodyLength = jsonStore.size();
@@ -313,7 +312,11 @@ void writeHTTP (String method, String host, String webpage, int bodyLength)
     pnt("Existing http request file removed");
     }
   }
+  else {
+   pnt("Http file will be created"); 
+  }
   httpRequest = SD.open("http.txt", FILE_WRITE);
+   pnt("Http file created");
   httpRequest.println(method + " " + webpage + " HTTP/1.1"); 
   httpRequest.println("Host: " + host);
   httpRequest.print("Content-Length: ");
@@ -322,36 +325,39 @@ void writeHTTP (String method, String host, String webpage, int bodyLength)
   //httpRequest.println("Connection: close");
   httpRequest.println("Content-Type: application/json");
   httpRequest.println();
+  httpRequest.println(jsonEngine.DataSubShell());
   httpRequest.close();
 
-  jsonStore = SD.open("json.txt");
-  int pos = 0;
-  while (jsonStore.available()) 
-  {
+  File jS = SD.open("json.txt");
+  int jSize = jS.size();
+  jS.close();
+  pnt("Going to Enter For Loop");
+  for (int pos = 0; pos < jSize; pos++) {
+    jsonStore = SD.open("json.txt");
     if(!jsonStore.seek(pos))
     {
       pnt("Error");
-    }   
+    } 
     int a =(byte)jsonStore.peek();
     char c = char(a);
-    pos++;
     jsonStore.close();
     httpRequest = SD.open("http.txt", FILE_WRITE);
     httpRequest.print(c);
     httpRequest.close();
-    jsonStore = SD.open("json.txt");   
-    if(!jsonStore.seek(pos - 1))
-    {
-      pnt("Error");
-    } 
-  jsonStore.close();
   }
+  httpRequest = SD.open("http.txt", FILE_WRITE);
+  httpRequest.println(jsonEngine.jsonCap());
+  httpRequest.println();
+  httpRequest.close();
+  pnt("Finished writing");
 }
 //Writes HTTP Request To Client
 void dumpToClient()
 {
+  pnt("Begining to Dump to Client");
   flushHttpr();
   Adafruit_CC3000_Client www = cc3000.connectTCP(ip, 80);
+  pnt("client object created");
   if (www.connected()) 
   {
     pnt("Connection Established");
