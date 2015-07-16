@@ -41,4 +41,16 @@ function loadPage(page) {
 		$('.content-wrapper').attr('style', d);
 		sessionStorage.setItem("page", page);
 		});
+	pageInit(page);
 }
+
+function pageInit(page) {
+	case "Dashboard":
+		break;
+	case "Statistics":
+		break;
+	case "Sensors":
+		break;
+	case "Settings":
+		break;
+	}
