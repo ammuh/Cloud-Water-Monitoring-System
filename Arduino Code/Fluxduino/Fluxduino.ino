@@ -12,7 +12,7 @@ float temperature;
 #include <FluxJsonParse.h>
 boolean isFirst;
 String uId = "m136efsrTy-1000001";
-FluxJsonParse jsonEngine(uId, String("time"),String("florRate"),String("mlUsed"),String("temperature"));
+FluxJsonParse jsonEngine(uId, String("time"), String("flowRate"), String("mlUsed"), String("temperature"));
 //Libs for SD
 #include <SPI.h>
 #include <SD.h>
@@ -29,15 +29,15 @@ File httpResponse;
 // Use hardware SPI for the remaining pins
 // On an UNO, SCK = 13, MISO = 12, and MOSI = 11
 Adafruit_CC3000 cc3000 = Adafruit_CC3000(ADAFRUIT_CC3000_CS, ADAFRUIT_CC3000_IRQ, ADAFRUIT_CC3000_VBAT,
-                                         SPI_CLOCK_DIVIDER);
-#define WLAN_SSID       "ammu"           // cannot be longer than 32 characters!
-#define WLAN_PASS       "ammar1234"
+                         SPI_CLOCK_DIVIDER);
+#define WLAN_SSID       "Ammar's iPhone"           // cannot be longer than 32 characters!
+#define WLAN_PASS       "ammar123"
 #define WLAN_SECURITY   WLAN_SEC_WPA2
-#define IDLE_TIMEOUT  3000
+#define IDLE_TIMEOUT  6000
 #define WEBSITE      "www.flux-plant.appspot.com"
 #define NEWSESSION      "/device/NewSession"
 #define DATASESSION      "/device/DataSubmit"
-uint32_t ip;
+uint32_t ip = 1249756813;
 
 
 //Button variables
@@ -51,7 +51,7 @@ byte sensorPin       = 3;
 // The hall-effect flow sensor outputs approximately 4.5 pulses per second per
 // litre/minute of flow.
 float calibrationFactor = 4.5;
-volatile byte pulseCount =0;  
+volatile byte pulseCount = 0;
 float flowRate = 0;
 unsigned int flowMilliLitres = 0;
 unsigned long totalMilliLitres = 0;
@@ -64,44 +64,37 @@ void setup() {
   if (!cc3000.begin())
   {
     pnt(F("Couldn't begin()! Check your wiring?"));
-    while(1);
+    while (1);
   }
   pnt("Passed begin if statement");
   // Optional SSID scan
   // listSSIDResults();
-  
+
   pnt(F("\nAttempting to connect to ")); pnt(WLAN_SSID);
   if (!cc3000.connectToAP(WLAN_SSID, WLAN_PASS, WLAN_SECURITY)) {
     pnt(F("Failed!"));
-    while(1);
+    while (1);
   }
-   
+
   pnt(F("Connected!"));
-  
+
   /* Wait for DHCP to complete */
   pnt(F("Request DHCP"));
   while (!cc3000.checkDHCP())
   {
-    delay(100); // ToDo: Insert a DHCP timeout!
-  }  
+    delay(200); // ToDo: Insert a DHCP timeout!
+  }
   pnt("Checked");
-  /* Display the IP address DNS, Gateway, etc. */  
+  /* Display the IP address DNS, Gateway, etc. */
   while (! displayConnectionDetails()) {
     delay(1000);
   }
 
-  ip = 0;
-  // Try looking up the website's IP address
-  pnt(WEBSITE); pnt(F(" -> "));
-  while (ip == 0) {
-    if (! cc3000.getHostByName(WEBSITE, &ip)) {
-      pnt(F("Couldn't resolve!"));
-    }
-    delay(500);
-  }
 
-  cc3000.printIPdotsRev(ip);
-  
+  // Try looking up the website's IP address
+
+
+
   //Pushbutton Setup
   pinMode(buttonPin, INPUT);    // declare pushbutton as input
   state = false;
@@ -125,11 +118,11 @@ void setup() {
   //JSON Engine Init
 }
 
-void loop(){  
+void loop() {
   //Halts till Push Button is pressed
   while (!state)
   {
-    if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>1000) {
+    if (digitalRead(buttonPin) == HIGH && (millis() - lastpress) > 1000) {
       pnt("Button Press");
       state = true;
       lastpress = millis();
@@ -143,28 +136,28 @@ void loop(){
   while (state)
   {
     //Measurement Process
-    if((millis() - oldTime) > 1000)    // Only process counters once per second
-    { 
+    if ((millis() - oldTime) > 1000)   // Only process counters once per second
+    {
       //Flow Meter Conversions
-      detachInterrupt(sensorInterrupt);           
+      detachInterrupt(sensorInterrupt);
       flowMilliLitres  = ((1000.0 / (millis() - oldTime)) * pulseCount * 1000) / (60 * calibrationFactor);
       oldTime = millis();
       totalMilliLitres += flowMilliLitres;
       //Temp Sensor Conversions
       temperature = getTemp();
       //TODO Add in JSON Write
-      jstoreln(jsonEngine.jsonAdd(String(millis()),String(flowMilliLitres),String(totalMilliLitres),String(temperature), isFirst));
+      jstoreln(jsonEngine.jsonAdd(String(millis()), String(flowMilliLitres), String(totalMilliLitres), String(temperature), isFirst));
       pnt("Time: " + String(millis()));
       pnt("Flow Rate: " + String(flowMilliLitres));
       pnt("Total Used: " + String(totalMilliLitres));
       pnt("Temperature: " + String(temperature));
       pnt("");
       isFirst = false; //Sets json lib so that wont at extra spaces and commas
-      oldTime = millis(); 
+      oldTime = millis();
       pulseCount = 0;
       attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
     }
-    if (digitalRead(buttonPin) == HIGH && (millis()-lastpress)>1000)
+    if (digitalRead(buttonPin) == HIGH && (millis() - lastpress) > 1000)
     {
       pnt("Button Press");
       state = false;
@@ -172,22 +165,23 @@ void loop(){
       pnt("Final Data");
       jsonStore = SD.open("json.txt");
       int bodyLength = jsonStore.size();
-      if(!jsonStore.seek(0))
+      if (!jsonStore.seek(0))
       {
         pnt("error");
       }
-      while (jsonStore.available()) 
-      {   
-        int a =(byte)jsonStore.peek();
+      while (jsonStore.available())
+      {
+        int a = (byte)jsonStore.peek();
         char c = char(a);
         String str;
         int pos = jsonStore.position() + 1;
-        if(!jsonStore.seek(pos))
+        if (!jsonStore.seek(pos))
         {
           pnt("error");
         }
-       Serial.print(c);        
+        Serial.print(c);
       }
+      jsonStore.close();
       pnt("Building HTTP request");
       writeHTTP("POST", WEBSITE, DATASESSION, bodyLength);
       dumpToClient();
@@ -204,28 +198,28 @@ void pulseCounter()
 //JSON Body Creation
 void flushJson(void)
 {
-  if(SD.exists("json.txt")){
+  if (SD.exists("json.txt")) {
     boolean check = SD.remove("json.txt");
     if (check) {
-    pnt("Existing JSON removed");
+      pnt("Existing JSON removed");
     }
   }
 }
 void flushHttp(void)
 {
-  if(SD.exists("http.txt")){
+  if (SD.exists("http.txt")) {
     boolean check = SD.remove("http.txt");
     if (check) {
-    pnt("Existing http removed");
+      pnt("Existing http removed");
     }
   }
 }
 void flushHttpr(void)
 {
-  if(SD.exists("httpr.txt")){
+  if (SD.exists("httpr.txt")) {
     boolean check = SD.remove("httpr.txt");
     if (check) {
-    pnt("Existing httpr removed");
+      pnt("Existing httpr removed");
     }
   }
 }
@@ -254,40 +248,40 @@ float getTemp(void)
   byte addr[8];
 
   if ( !ds.search(addr)) {
-      //no more sensors on chain, reset search
-      ds.reset_search();
-      return -1000;
+    //no more sensors on chain, reset search
+    ds.reset_search();
+    return -1000;
   }
 
   ds.reset();
   ds.select(addr);
-  ds.write(0x44,1); // start conversion, with parasite power on at the end
+  ds.write(0x44, 1); // start conversion, with parasite power on at the end
 
   byte present = ds.reset();
-  ds.select(addr);    
+  ds.select(addr);
   ds.write(0xBE); // Read Scratchpad
 
-  
+
   for (int i = 0; i < 9; i++) { // we need 9 bytes
     data[i] = ds.read();
   }
-  
+
   ds.reset_search();
-  
+
   byte MSB = data[1];
   byte LSB = data[0];
 
   float tempRead = ((MSB << 8) | LSB); //using two's compliment
   float TemperatureSum = tempRead / 16;
-  
+
   return TemperatureSum;
 }
 //WifiMethods
 bool displayConnectionDetails(void)
 {
   uint32_t ipAddress, netmask, gateway, dhcpserv, dnsserv;
-  
-  if(!cc3000.getIPAddress(&ipAddress, &netmask, &gateway, &dhcpserv, &dnsserv))
+
+  if (!cc3000.getIPAddress(&ipAddress, &netmask, &gateway, &dhcpserv, &dnsserv))
   {
     Serial.println(F("Unable to retrieve the IP Address!\r\n"));
     return false;
@@ -295,6 +289,7 @@ bool displayConnectionDetails(void)
   else
   {
     Serial.print(F("\nIP Addr: ")); cc3000.printIPdotsRev(ipAddress);
+    Serial.print(String(ipAddress));
     Serial.print(F("\nNetmask: ")); cc3000.printIPdotsRev(netmask);
     Serial.print(F("\nGateway: ")); cc3000.printIPdotsRev(gateway);
     Serial.print(F("\nDHCPsrv: ")); cc3000.printIPdotsRev(dhcpserv);
@@ -304,23 +299,23 @@ bool displayConnectionDetails(void)
   }
 }
 //Create HTTP request
-void writeHTTP (String method, String host, String webpage, int bodyLength) 
+void writeHTTP (String method, String host, String webpage, int bodyLength)
 {
-  if(SD.exists("http.txt")){
+  if (SD.exists("http.txt")) {
     boolean check = SD.remove("http.txt");
     if (check) {
-    pnt("Existing http request file removed");
+      pnt("Existing http request file removed");
     }
   }
   else {
-   pnt("Http file will be created"); 
+    pnt("Http file will be created");
   }
   httpRequest = SD.open("http.txt", FILE_WRITE);
-   pnt("Http file created");
-  httpRequest.println(method + " " + webpage + " HTTP/1.1"); 
+  pnt("Http file created");
+  httpRequest.println(method + " " + webpage + " HTTP/1.1");
   httpRequest.println("Host: " + host);
-  httpRequest.print("Content-Length: ");
-  httpRequest.println(bodyLength);
+  //httpRequest.print("Content-Length: ");
+  //httpRequest.println(bodyLength);
   //httpRequest.println("User-Agent: Arduino/1.0");
   //httpRequest.println("Connection: close");
   httpRequest.println("Content-Type: application/json");
@@ -334,11 +329,11 @@ void writeHTTP (String method, String host, String webpage, int bodyLength)
   pnt("Going to Enter For Loop");
   for (int pos = 0; pos < jSize; pos++) {
     jsonStore = SD.open("json.txt");
-    if(!jsonStore.seek(pos))
+    if (!jsonStore.seek(pos))
     {
       pnt("Error");
-    } 
-    int a =(byte)jsonStore.peek();
+    }
+    int a = (byte)jsonStore.peek();
     char c = char(a);
     jsonStore.close();
     httpRequest = SD.open("http.txt", FILE_WRITE);
@@ -347,7 +342,6 @@ void writeHTTP (String method, String host, String webpage, int bodyLength)
   }
   httpRequest = SD.open("http.txt", FILE_WRITE);
   httpRequest.println(jsonEngine.jsonCap());
-  httpRequest.println();
   httpRequest.close();
   pnt("Finished writing");
 }
@@ -358,32 +352,35 @@ void dumpToClient()
   flushHttpr();
   Adafruit_CC3000_Client www = cc3000.connectTCP(ip, 80);
   pnt("client object created");
-  if (www.connected()) 
+  if (www.connected())
   {
     pnt("Connection Established");
     httpRequest = SD.open("http.txt");
-    if(!httpRequest.seek(0))
+    if (!httpRequest.seek(0))
     {
       pnt("error");
     }
-    while (httpRequest.available()) 
-    {   
-      int a =(byte)httpRequest.peek();
+    while (httpRequest.available())
+    {
+      int a = (byte)httpRequest.peek();
       char c = char(a);
       int pos = httpRequest.position() + 1;
-      if(!httpRequest.seek(pos))
+      if (!httpRequest.seek(pos))
       {
         pnt("error");
       }
-      www.write(c);        
+      www.write(c);
     }
     pnt("While Loop Finished");
     httpRequest.close();
+    pnt("SD Closed");
     www.println();
+    pnt("Final printed");
   }
-  
+
   unsigned long lastRead = millis();
-  while (www.connected() && (millis() - lastRead < IDLE_TIMEOUT)) 
+  pnt("About to read");
+  while (www.connected() && (millis() - lastRead < IDLE_TIMEOUT))
   {
     while (www.available()) {
       char c = www.read();
@@ -394,8 +391,9 @@ void dumpToClient()
       lastRead = millis();
     }
   }
-  
+  pnt("End of data");
   www.close();
+  pnt("Connection closed");
 }
 //Finds Attribute in JSON body of certain key
 /*
@@ -413,8 +411,8 @@ String findAttr(String attr)
   {
     pnt("Initial Seek Error");
   }
-  while (httpResponse.available() && found == false) 
-  {   
+  while (httpResponse.available() && found == false)
+  {
     int a =(byte)httpResponse.peek();
     char c = char(a);
     if (charBuf[i] == c) {
@@ -449,7 +447,7 @@ String findAttr(String attr)
     {
       pnt("error");
     }
-    pnt(String(pos));    
+    pnt(String(pos));
   }
   return val;
 }

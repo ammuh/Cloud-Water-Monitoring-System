@@ -215,7 +215,7 @@ class DataSubmit(webapp2.RequestHandler):
     else:
       mlUsed= b['aggData']['mlUsed']
       temp= b['aggData']['avgTemperature']
-    state = _NewData(b.get("uniqueId"), temp, mlUsed)
+    state = _NewData(b['uniqueId'], temp, mlUsed)
     status=""
     if state:
       status="Success"
