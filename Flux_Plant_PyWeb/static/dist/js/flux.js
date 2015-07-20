@@ -1,9 +1,9 @@
 var menuMap = {
-	"Dashboard":"AjaxPartials/Partials/dashboard_p.html",
-	"Statistics":"AjaxPartials/Partials/statistics_p.html",
-	"Sensors":"AjaxPartials/Partials/sensors_p.html",
-	"Settings":"settings_p"
-	};
+	"Dashboard": "Partials/dashboard_p.html",
+	"Statistics": "Partials/statistics_p.html",
+	"Sensors": "Partials/sensors_p.html",
+	"Settings": "settings_p"
+};
 $(document).ready(function(e) {
 	var i = sessionStorage.getItem("page");
     if (i == null) {
@@ -49,6 +49,7 @@ function loadPage(page) {
 function pageInit(page) {
 	switch(page){
 		case "Dashboard":
+			  
 			break;
 		case "Statistics":
 			Chart.defaults.global.responsive = true;
@@ -98,6 +99,23 @@ function pageInit(page) {
 			);
 			break;
 		case "Sensors":
+			  $(function () {
+				$("#sensorst").dataTable({
+                    "pageLength": 5,
+                    "lengthChange": false,
+                    "searching": false,
+                    "language": {
+                      "emptyTable": "You have no sensors in your profile."
+                    }
+                });
+                $("#sensorsl").dataTable({
+                    "data":{},
+                    "language": {
+                    "emptyTable": "Select a sensor to view the data."
+                    }
+                });
+			  });
+            $('#world-map').vectorMap();
 			break;
 		case "Settings":
 			break;

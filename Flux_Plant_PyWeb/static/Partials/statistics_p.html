@@ -12,15 +12,34 @@
   <div class="row">
     <div class="col-md-8"> 
       <!-- AREA CHART -->
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title">Area Chart</h3>
-          <div class="box-tools pull-right"> </div>
-        </div>
+      <div class="box">
         <div class="box-body">
-          <div class="chart">
-            <canvas id="areaChart" height="250"></canvas>
-          </div>
+          <div class="nav-tabs-custom">
+                <!-- Tabs within a box -->
+                <ul class="nav nav-tabs pull-right">
+                    <li><a href="#cost-a" data-toggle="tab">Cost Analysis</a></li>
+                    <li class="active"><a href="#env-impact" data-toggle="tab">Environmental Impact</a></li>                  
+                  <li class="pull-left header"><i class="fa fa-inbox"></i>Consumption Stats</li>
+                </ul>
+                <div class="tab-content no-padding">
+                  <!-- Morris chart - Sales -->
+                  <div class="chart tab-pane active" id="env-impact" style="position: relative;">
+                    <div class="box-body">
+                  <table class="table table-condensed">
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Task</th>
+                      <th>Progress</th>
+                      <th>Label</th>
+                    </tr>
+                  </table>
+                </div><!-- /.box-body -->
+                    </div>
+                  <div class="chart tab-pane" id="cost-a" style="position: relative;">
+                    
+                    </div>
+                </div>
+              </div><!-- /.nav-tabs-custom -->
         </div>
         <!-- /.box-body --> 
       </div>

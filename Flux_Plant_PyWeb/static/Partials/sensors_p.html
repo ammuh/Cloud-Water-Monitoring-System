@@ -1,0 +1,134 @@
+
+<section class="content-header">
+  <h1> Sensors <small>Access different sensor configurations</small> </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active">Sensors</li>
+  </ol>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab_1" data-toggle="tab">My Sensors</a></li>
+          <li><a href="#tab_2" data-toggle="tab">Map</a></li>
+        </ul>
+        <div class="tab-content">
+          
+          <div class="tab-pane active" id="tab_1">
+              <p>Click to view data log below.</p>
+           <table id="sensorst" class="table table-bordered table-striped hover" width="100%">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+            
+          </table>
+          </div>
+          <!-- /.tab-pane -->
+          <div class="tab-pane" id="tab_2"><div id="world-map"></div> </div>
+          <!-- /.tab-pane --> 
+            
+        </div>
+        <!-- /.tab-content --> 
+      </div>
+      <!-- nav-tabs-custom -->
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Datalog</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="sensorsl" class="table table-bordered table-striped" width="100%">
+            <thead>
+              <tr>
+                <th>TimeStamp</th>
+                <th>Water Consumed (mL)</th>
+                <th>Temperature</th>
+              </tr>
+              </thead>
+            
+          </table>
+        </div>
+        <!-- /.box-body --> 
+      </div>
+      <!-- /.box --> 
+    </div>
+    <div class="col-xs-4">
+      <div class="box">
+        <div class="box-header">
+          <h3 class="box-title">Register New Sensors</h3>
+        </div>
+        <div class="box-body">
+          <h5>FluxPlant Sensors</h5>
+          <form role="form">
+            <div class='form-group'>
+              <label>Name</label>
+              <input type="text" class="form-control" placeholder="Enter given id"/>
+            </div>
+            <div class='form-group'>
+              <label>Id</label>
+              <input type="text" class="form-control" placeholder="Enter given id"/>
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+            <button class="btn btn-block btn-default">Submit</button>
+          </form>
+          <h5>Want to register your own sensor?</h5>
+          <form role="form">
+            <!-- text input -->
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" class="form-control" placeholder="Enter ..."/>
+            </div>
+            <div class="form-group">
+              <label>IP Address</label>
+              <input type="text" class="form-control" placeholder="Enter ..."/>
+            </div>
+            <div class="form-group">
+              <label>Mac Address</label>
+              <input type="text" class="form-control" placeholder="Enter ..."/>
+            </div>
+            <div class="form-group">
+              <label>Location</label>
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+            
+            <!-- checkbox -->
+            <div class="form-group">
+              <label>Type</label>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"/>
+                  Fluid </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"/>
+                  Temperature </label>
+              </div>
+            </div>
+          </form>
+          <button class="btn btn-block btn-default">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row"> </div>
+  <!-- /.row --> 
+</section>
+<!-- /.content -->
