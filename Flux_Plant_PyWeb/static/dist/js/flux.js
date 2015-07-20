@@ -1,8 +1,11 @@
 var menuMap = {
 	"Dashboard": "Partials/dashboard_p.html",
-	"Statistics": "Partials/statistics_p.html",
 	"Sensors": "Partials/sensors_p.html",
-	"Settings": "settings_p"
+	"Settings": "settings_p",
+    "Water":"Partials/dash_water_p.html",
+    "Energy":"Partials/dash_energy_p.html",
+    "Cost":"Partials/dash_cost_p.html",
+    "Carbon Emissions":"Partials/dash_ce_p.html"
 };
 $(document).ready(function(e) {
 	var i = sessionStorage.getItem("page");
@@ -13,14 +16,12 @@ $(document).ready(function(e) {
 });
 
 function loadPage(page) {
-	console.log("Entered Load Page Function");
 	console.log(page);
 	c = $('.content-wrapper').attr('style');
 	z = $('.content-wrapper fa fa-refresh fa-spin fa-5x');
 	console.log(c);
 	console.log(z);
 	if (c === undefined || c == null || c === false) {
-		console.log("EnteredIf Block");
 		$('.content-wrapper').empty();
 		h = $(window).height();
 		prp = "padding:"+h/2+"px; text-align:center;";
@@ -49,10 +50,31 @@ function loadPage(page) {
 function pageInit(page) {
 	switch(page){
 		case "Dashboard":
-			  
-			break;
-		case "Statistics":
-			Chart.defaults.global.responsive = true;
+            h = $('.box-body.dailyReport').height();
+            $('.box-body.dailyReport').empty();
+            prp = "padding:"+h/2+"px; text-align:center;";
+            $('.box-body.dailyReport').attr('style', prp);
+            $('.box-body.dailyReport').html('<i class="fa fa-refresh fa-spin fa-3x"></i>');
+            $.get(menuMap[$('.nav.dailyReport > li.active > a').html()], function(data) {
+                $('.box-body.dailyReport').attr('style', '');
+                $('.box-body.dailyReport').html(data).promise().done(function(){
+                });
+                });
+            $('.nav.dailyReport > li').click(function() {
+                console.log($(this));
+                h = $('.box-body.dailyReport').height();
+                $('.box-body.dailyReport').empty();
+                prp = "padding:"+h/2+"px; text-align:center;";
+                $('.box-body.dailyReport').attr('style', prp);
+		        $('.box-body.dailyReport').html('<i class="fa fa-refresh fa-spin fa-3x"></i>');
+                $.get(menuMap[$(this).children('a').html()], function(data) {
+                 $('.box-body.dailyReport').empty();
+                $('.box-body.dailyReport').attr('style', '');
+                $('.box-body.dailyReport').html(data).promise().done(function(){
+                });
+                });
+            });
+            Chart.defaults.global.responsive = true;
 			var data = {
 					labels: ["January", "February", "March", "April", "May", "June", "July"],
 					datasets: [
@@ -116,7 +138,34 @@ function pageInit(page) {
                 });
 			  });
             $('#world-map').vectorMap();
-			break;
+            $('#daterange-btn').daterangepicker(
+                    {
+                      ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                        'Last 7 Days': [moment().subtract('days', 6), moment()],
+                        'Last 30 Days': [moment().subtract('days', 29), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                      },
+                      startDate: moment().subtract('days', 29),
+                      endDate: moment()
+                    },
+                 function (start, end) {
+                  $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                 }
+                 );
+            var gdata = null;
+            if (gdata != null){
+                 Chart.defaults.global.responsive = true;
+                 var ctx = $('#stat-master').get(0).getContext("2d");
+                 new Chart(ctx).Line(data, {bezierCurve: false});
+            }
+            else{
+                $('.graph-container').empty();
+                $('graph-container')
+            }
+           break;
 		case "Settings":
 			break;
 		}

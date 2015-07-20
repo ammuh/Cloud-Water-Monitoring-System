@@ -13,96 +13,53 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-<div class="col-md-9">
+    <div class="col-md-9">
    <div class="box">
-                <div class="nav-tabs-custom">
-                <!-- Tabs within a box -->
-                <ul class="nav nav-tabs pull-right">
-                    <li class="pull-left header"><i class="fa fa-inbox"></i>Leaderboards</li>
-                  <li class="active pull-left"><a href="#goldstar" data-toggle="tab">Gold Star</a></li>
-                  <li class="pull-left"><a href="#badapple" data-toggle="tab">Bad Apple</a></li>
+        <div class="nav-tabs-custom">
+        <!-- Tabs within a box -->
+        <ul class="nav nav-tabs pull-right dailyReport">
+            <li class="pull-left header"><i class="fa fa-inbox"></i>Daily Report</li>
+            <li><a href="#badapple" data-toggle="tab">Carbon Emissions</a></li>
+            <li><a href="#badapple" data-toggle="tab">Cost</a></li>
+            <li><a href="#badapple" data-toggle="tab">Energy</a></li>
+            <li class="active"><a href="#goldstar" data-toggle="tab">Water</a></li>
+        </ul>
+       <div class="box-body dailyReport">
+            </div>
+        </div>
+        <div class="box-footer">
+          <div class="row">
+            <div class="col-sm-3 col-xs-6">
+              <div class="description-block border-right">
 
-                </ul>
-               `<div class="box-body">
-                    <div class="row">
-                    <div class="col-md-8">
-                      <p class="text-center">
-                        <strong>Sales: 1 Jan, 2014 - 30 Jul, 2014</strong>
-                      </p>
-                      <div class="chart">
-                        <!-- Sales Chart Canvas -->
-                        <canvas id="salesChart" height="180"></canvas>
-                      </div><!-- /.chart-responsive -->
-                    </div><!-- /.col -->
-                    <div class="col-md-4">
-                      <p class="text-center">
-                        <strong>Goal Completion</strong>
-                      </p>
-                      <div class="progress-group">
-                        <span class="progress-text">Add Products to Cart</span>
-                        <span class="progress-number"><b>160</b>/200</span>
-                        <div class="progress sm">
-                          <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
-                        </div>
-                      </div><!-- /.progress-group -->
-                      <div class="progress-group">
-                        <span class="progress-text">Complete Purchase</span>
-                        <span class="progress-number"><b>310</b>/400</span>
-                        <div class="progress sm">
-                          <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-                        </div>
-                      </div><!-- /.progress-group -->
-                      <div class="progress-group">
-                        <span class="progress-text">Visit Premium Page</span>
-                        <span class="progress-number"><b>480</b>/800</span>
-                        <div class="progress sm">
-                          <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-                        </div>
-                      </div><!-- /.progress-group -->
-                      <div class="progress-group">
-                        <span class="progress-text">Send Inquiries</span>
-                        <span class="progress-number"><b>250</b>/500</span>
-                        <div class="progress sm">
-                          <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
-                        </div>
-                      </div><!-- /.progress-group -->
-                    </div><!-- /.col -->
-                  </div><!-- /.row -->
-                    </div>
-                </div>
-                <div class="box-footer">
-                  <div class="row">
-                    <div class="col-sm-3 col-xs-6">
-                      <div class="description-block border-right">
-                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-                        <h5 class="description-header">$35,210.43</h5>
-                        <span class="description-text">Water Used</span>
-                      </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                    <div class="col-sm-3 col-xs-6">
-                      <div class="description-block border-right">
-                        <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                        <h5 class="description-header">$10,390.90</h5>
-                        <span class="description-text">Energy Used</span>
-                      </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                    <div class="col-sm-3 col-xs-6">
-                      <div class="description-block border-right">
-                        <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                        <h5 class="description-header">$24,813.53</h5>
-                        <span class="description-text">Cost</span>
-                      </div><!-- /.description-block -->
-                    </div><!-- /.col -->
-                    <div class="col-sm-3 col-xs-6">
-                      <div class="description-block">
-                        <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                        <h5 class="description-header">1200</h5>
-                        <span class="description-text">Carbon Emissions</span>
-                      </div><!-- /.description-block -->
-                    </div>
-                  </div><!-- /.row -->
-                </div><!-- /.box-footer -->
-              </div><!-- /.box -->
+                <h5 class="description-header">$35,210.43</h5>
+                <span class="description-text">Water Used</span>
+              </div><!-- /.description-block -->
+            </div><!-- /.col -->
+            <div class="col-sm-3 col-xs-6">
+              <div class="description-block border-right">
+
+                <h5 class="description-header">$10,390.90</h5>
+                <span class="description-text">Energy Used</span>
+              </div><!-- /.description-block -->
+            </div><!-- /.col -->
+            <div class="col-sm-3 col-xs-6">
+              <div class="description-block border-right">
+                
+                <h5 class="description-header">$24,813.53</h5>
+                <span class="description-text">Cost</span>
+              </div><!-- /.description-block -->
+            </div><!-- /.col -->
+            <div class="col-sm-3 col-xs-6">
+              <div class="description-block">
+              
+                <h5 class="description-header">1200</h5>
+                <span class="description-text">Carbon Emissions</span>
+              </div><!-- /.description-block -->
+            </div>
+          </div><!-- /.row -->
+        </div><!-- /.box-footer -->
+      </div><!-- /.box -->
     </div>
     <div class="col-md-3">
     <div class="nav-tabs-custom">
@@ -127,29 +84,45 @@
     </div>
   </div><!-- /.row -->
 <div class="row">
-    <div class="col-md-9">
-    <div class="box">
-        <div class="nav-tabs-custom">
-        <!-- Tabs within a box -->
-        <ul class="nav nav-tabs pull-right">
-            <li class="pull-left header"><i class="fa fa-inbox"></i>Leaderboards</li>
-          <li class="active pull-left"><a href="#goldstar" data-toggle="tab">Gold Star</a></li>
-          <li class="pull-left"><a href="#badapple" data-toggle="tab">Bad Apple</a></li>
-          
-        </ul>
-        <div class="tab-content no-padding">
-          <!-- Morris chart - Sales -->
-          <div class="tab-pane active" id="goldstar" style="position: relative; height: 300px;">
-            
+    <div class="col-md-12">
+         <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Aggregate Data</h3>
+        </div>
+        <div class="box-body">
+        <div class="row">
+        	<div class="col-md-6">
+            	<h4>Pick your data to display</h4>
             </div>
-          <div class="tab-pane" id="badapple" style="position: relative; height: 300px;">
-        
+            <div class="col-md-6">
+            	<h4 class="pull-right">Choose a range</h4>
             </div>
         </div>
+          <div class="row" style="padding:20 px;">
+            <div class="col-md-2">
+              <button type="button" class="btn btn-block btn-primary">Water</button>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-block btn-warning">Energy</button>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-block btn-success">Cost</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-default pull-right" id="daterange-btn"> <i class="fa fa-calendar"></i> Date range picker <i class="fa fa-caret-down"></i> </button>
+            </div>
+          </div>
+          <div class="graph-container">
+             <canvas id="stat-master" width="800" height="400"></canvas>
+          </div>
+          <!-- /.form group -->
+         
+        </div>
+        <!-- /.box-body --> 
       </div>
-        </div>
+      <!-- /.box --> 
     </div>
-    </div>
+</div>
   <!-- Main row -->
     <h3 class="page-header">Updates</h3>
   <div class="row">
