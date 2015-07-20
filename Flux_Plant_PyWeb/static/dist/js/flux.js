@@ -1,10 +1,10 @@
 var menuMap = {
-    "Dashboard": "Partials/dashboard_p.html",
-    "Sensors": "Partials/sensors_p.html",
-    "Settings": "Partials/settings_p.html",
-    "Water": "Partials/dash_water_p.html",
-    "Cost": "Partials/dash_cost_p.html",
-    "Carbon Emissions": "Partials/dash_ce_p.html"
+    "Dashboard": "../Partials/dashboard_p.html",
+    "Sensors": "../Partials/sensors_p.html",
+    "Settings": "../Partials/settings_p.html",
+    "Water": "../Partials/dash_water_p.html",
+    "Cost": "../Partials/dash_cost_p.html",
+    "Carbon Emissions": "../Partials/dash_ce_p.html"
 };
 $(document).ready(function(e) {
     var i = sessionStorage.getItem("page");

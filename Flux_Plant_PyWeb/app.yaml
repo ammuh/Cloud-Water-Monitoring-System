@@ -18,11 +18,6 @@ handlers:
   script: main.deviceAPI
   secure: optional
 
-- url: /
-  mime_type: text/html
-  static_files: static/pages/examples/login.html
-  upload: static/pages/examples/login\.html
-
 
 #Static Files
 - url: /(.*\.html)

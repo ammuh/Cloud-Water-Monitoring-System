@@ -1,19 +1,29 @@
 # -*- coding: utf-8 -*-
 import logging
 import secrets
-
+import os
 import webapp2
 import webob.multidict
+import jinja2
 
-from webapp2_extras import auth, sessions, jinja2
+from webapp2_extras import auth, sessions
 from jinja2.runtime import TemplateNotFound
 from simpleauth import SimpleAuthHandler
 
 from fluxlogic import _SensorReg
 from fluxlogic import _NewData
 from request_models import dataTypes
+from google.appengine.ext.webapp import template
 
 import json
+DEFAULT_AVATAR_URL = '/img/missing-avatar.png'
+FACEBOOK_AVATAR_URL = 'https://graph.facebook.com/{0}/picture?type=large'
+FOURSQUARE_USER_LINK = 'http://foursquare.com/user/{0}'
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
 
 class BaseRequestHandler(webapp2.RequestHandler):
   def dispatch(self):
@@ -76,21 +86,48 @@ class BaseRequestHandler(webapp2.RequestHandler):
 class RootHandler(BaseRequestHandler):
   def get(self):
     if self.logged_in:
-      self.redirect('/profile')
+      self.redirect('/fp/profile')
     else:
-      self.redirect('/')
+      self.redirect('/fp/login')
+class Login(BaseRequestHandler):
+  def get(self):
+    if self.logged_in:
+      self.redirect('/fp/profile')
+    else:
+      path = os.path.join(os.path.dirname(__file__), 'static/login.html')
+      template_values={
+      }
+      self.response.out.write(template.render(path, template_values))
+    
 
 class ProfileHandler(BaseRequestHandler):
   def get(self):
     """Handles GET /profile"""
     if self.logged_in:
-      self.render('profile.html', {
-        'user': self.current_user,
-        'session': self.auth.get_user_by_session()
-      })
+      path = os.path.join(os.path.dirname(__file__), 'static/profile.html')
+      template_values={ 
+        'name': self.current_user.name,
+        'user_img': self.current_user.avatar_url     
+      }
+      template = JINJA_ENVIRONMENT.get_template('static/profile.html')
+      self.response.write(template.render(template_values))
     else:
-      self.redirect('/')
+      self.redirect('/fp/login')
 
+#Sensor Page Handlers
+class GetUserSensors(BaseRequestHandler):
+  def get(self):
+    if self.logged_in:
+      path = os.path.join(os.path.dirname(__file__), 'static/profile.html')
+      template_values={ 
+        'name': self.current_user.name,
+        'user_img': self.current_user.avatar_url     
+      }
+      template = JINJA_ENVIRONMENT.get_template('static/profile.html')
+      self.response.write(template.render(template_values))
+    else:
+      self.redirect('/fp/login')
+#Authentication Handlers
 class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
   """Authentication handler for all kinds of auth."""
   OAUTH2_CSRF_STATE = True
@@ -165,15 +202,15 @@ class AuthHandler(BaseRequestHandler, SimpleAuthHandler):
           self.auth.set_session(self.auth.store.user_to_dict(user))
 
     # user profile page
-    destination_url = '/profile'
+    destination_url = '/fp/profile'
     if extra is not None:
       params = webob.multidict.MultiDict(extra)
-      destination_url = str(params.get('destination_url', '/profile'))
+      destination_url = str(params.get('destination_url', '/fp/profile'))
     return self.redirect(destination_url)
 
   def logout(self):
     self.auth.unset_session()
-    self.redirect('/')
+    self.redirect('/fp/login')
 
   def handle_exception(self, exception, debug):
     logging.error(exception)
