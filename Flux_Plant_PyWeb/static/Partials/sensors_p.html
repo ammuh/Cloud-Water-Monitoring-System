@@ -2,7 +2,7 @@
 <section class="content-header">
   <h1> Sensors <small>Access different sensor configurations</small> </h1>
   <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="#"><i class="fa fa-dashboard"></i> Profile</a></li>
     <li class="active">Sensors</li>
   </ol>
 </section>
@@ -50,21 +50,21 @@
             	<h4 class="pull-right">Choose a range</h4>
             </div>
         </div>
-          <div class="row" style="padding:20 px;">
-            <div class="col-md-2">
+          <div class="row" >
+            <div class="col-md-3">
               <button type="button" class="btn btn-block btn-primary">Water</button>
-            </div>
-            <div class="col-md-2">
-              <button type="button" class="btn btn-block btn-warning">Energy</button>
-            </div>
-            <div class="col-md-2">
+              </div>
+            <div class="col-md-3">
               <button type="button" class="btn btn-block btn-success">Cost</button>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
+              <button type="button" class="btn btn-block btn-success">Carbon Emissions</button>
+            </div>
+            <div class="col-md-3">
               <button class="btn btn-default pull-right" id="daterange-btn"> <i class="fa fa-calendar"></i> Date range picker <i class="fa fa-caret-down"></i> </button>
             </div>
           </div>
-          
+         
           <!-- /.form group -->
           <div class="graph-container">
              <canvas id="stat-master" width="800" height="400"></canvas>
