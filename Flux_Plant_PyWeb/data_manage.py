@@ -6,6 +6,7 @@ import webapp2_extras.appengine.auth.models as auth_models
 class sessIdPointers(ndb.Model):
   SessionId= ndb.StringProperty()
 
+#Sensors
 class FluxSensors(ndb.Model):
   name= ndb.StringProperty()
   Ip= ndb.IntegerProperty()
@@ -17,7 +18,7 @@ class FluxSensors(ndb.Model):
   lock= ndb.BooleanProperty()
   location = ndb.StringProperty()
   sublocation = ndb.StringProperty()
-  # Sensor Sessions Entity Group
+# Sensor Sessions
 class FluxSessions(ndb.Model):
   uId= ndb.StringProperty()
   DateTime= ndb.DateTimeProperty(auto_now_add=True)

@@ -89,7 +89,7 @@ class FluxPlantApi(remote.Service):
     sessQryObj = FluxSessions.query(ancestor=sensor.key).fetch()
     sessList = []
     for i in xrange(len(sessQryObj)):
-      sessData = RawSensorData(time=str(sessQryObj[i].Time), mlUsed=sessQryObj[i].mlUsed, avgTemperature=sessQryObj[i].AverageTemp)
+      sessData = RawSensorData(time=str(sessQryObj[i].DateTime), mlUsed=sessQryObj[i].mlUsed, avgTemperature=sessQryObj[i].AverageTemp)
       sessList.append(sessData)
 
     return SensorDataResponse(datatype=dataTypes.JSON, allSessions=sessList, message=request.message)
@@ -148,12 +148,10 @@ class FluxPlantApi(remote.Service):
       userData.append(dataStructure)    
     
     resp=GetDataResponse(userEmail=email, DataBySensors=userData)
-    
-
     #for i in range(len(qryUser.Sensors)):
     #  snsrsKey=qryUser.Sensors[i]
-     # ConsumId= snsrsKey.get().ConsumId
-     # snsrs.append(ConsumId)
+    #  ConsumId= snsrsKey.get().ConsumId
+    #  snsrs.append(ConsumId)
 
     return resp
 
