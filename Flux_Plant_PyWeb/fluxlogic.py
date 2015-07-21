@@ -38,18 +38,18 @@ def _SensorReg(attrs):
   cid= ""
   if attrs.get('ConsumId', None) != None:
     snsr = FluxSensors.query(FluxSensors.ConsumId == attrs.get('ConsumId')).fetch(1)[0]
-    if attrs.get('Ip', None) != None:
-      snsr.Ip = attrs.get('Ip')
-    if attrs.get('Type', None) != None:
-      snsr.Type = attrs.get('Type')
-    if attrs.get('Privacy', None) != None:
-      snsr.Privacy = attrs.get('Privacy')  
-    if attrs.get('mac', None) != None:
-      snsr.Mac = attrs.get('mac') 
+    if attrs.get('name', None) != None:
+      snsr.name = attrs.get('name')
+    if attrs.get('location', None) != None:
+      snsr.location = attrs.get('location')
+    if attrs.get('sublocation', None) != None:
+      snsr.sublocation = attrs.get('sublocation')
     snsr.put()
     cid= "Registered"
   else:
     snsr = FluxSensors()
+    if attrs.get('name', None) != None:
+      snsr.name = attrs.get('Ip')
     if attrs.get('Ip', None) != None:
       snsr.Ip = attrs.get('Ip')
     if attrs.get('Type', None) != None:
@@ -58,6 +58,10 @@ def _SensorReg(attrs):
       snsr.Privacy = attrs.get('Privacy')
     if attrs.get('mac', None) != None:
       snsr.Mac = attrs.get('mac') 
+    if attrs.get('location', None) != None:
+      snsr.location = attrs.get('location')
+    if attrs.get('sublocation', None) != None:
+      snsr.sublocation = attrs.get('sublocation')  
     snsrId= FluxSensors.allocate_ids(size=1)[0]
     snsrKey= ndb.Key('FluxSensors', snsrId)
     rando = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(10)])

@@ -7,6 +7,7 @@ class sessIdPointers(ndb.Model):
   SessionId= ndb.StringProperty()
 
 class FluxSensors(ndb.Model):
+  name= ndb.StringProperty()
   Ip= ndb.IntegerProperty()
   Mac=ndb.StringProperty()
   ConsumId= ndb.StringProperty()
@@ -14,15 +15,18 @@ class FluxSensors(ndb.Model):
   Privacy= ndb.StringProperty()
   bqpointer= ndb.StringProperty()
   lock= ndb.BooleanProperty()
+  location = ndb.StringProperty()
+  sublocation = ndb.StringProperty()
 # Sensor Sessions Entity Group
 class FluxSessions(ndb.Model):
-  Time= ndb.TimeProperty(auto_now_add=True)
   uId= ndb.StringProperty()
-  Date= ndb.DateProperty(auto_now_add=True)
+  DateTime= ndb.DateTimeProperty(auto_now_add=True)
   AverageTemp= ndb.FloatProperty()
   mlUsed= ndb.FloatProperty()
 #User Class
 class Users(auth_models.User):
   email= ndb.StringProperty()
   name= ndb.StringProperty()
-  Sensors= ndb.KeyProperty(repeated=True)
+  Sensors= ndb.StringProperty(repeated=True)
+  locations= ndb.StringProperty(repeated=True)
+  sublocations= ndb.StringProperty(repeated=True)

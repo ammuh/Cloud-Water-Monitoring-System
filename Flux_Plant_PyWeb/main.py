@@ -23,6 +23,8 @@ app_config = {
 
 # Map URLs to handlers
 routes = [
+  Route('/fp/user/sensors/form', handler='handlers.SensorForm', name='login'),
+  Route('/fp/user/data', handler='handlers.UserData', name='Data'),
   Route('/fp/login', handler='handlers.Login', name='login'),
 	Route('/fp/profile', handler='handlers.ProfileHandler', name='profile'),
 	Route('/fp/auth/<provider>', handler='handlers.AuthHandler:_simple_auth', name='auth_login'),
