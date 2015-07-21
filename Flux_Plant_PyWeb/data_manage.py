@@ -17,7 +17,7 @@ class FluxSensors(ndb.Model):
   lock= ndb.BooleanProperty()
   location = ndb.StringProperty()
   sublocation = ndb.StringProperty()
-# Sensor Sessions Entity Group
+  # Sensor Sessions Entity Group
 class FluxSessions(ndb.Model):
   uId= ndb.StringProperty()
   DateTime= ndb.DateTimeProperty(auto_now_add=True)
