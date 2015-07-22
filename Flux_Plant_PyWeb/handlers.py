@@ -95,9 +95,8 @@ class Login(BaseRequestHandler):
       self.redirect('/fp/profile')
     else:
       path = os.path.join(os.path.dirname(__file__), 'static/login.html')
-      template_values={
-      }
-      self.response.out.write(template.render(path, template_values))
+      template = JINJA_ENVIRONMENT.get_template('static/login.html')
+      self.response.write(template.render())
     
 
 class ProfileHandler(BaseRequestHandler):
@@ -310,9 +309,9 @@ class DataSubmit(webapp2.RequestHandler):
     if b['datatype'] == 'JSON':
       runningTotal=0
       for i in xrange(len(b['rawData'])):
-        runningTotal+= b['rawData'][i]['temperature']
-      temp= runningTotal/(len(b['rawData']))
-      mlUsed= b['rawData'][len(b['rawData'])-1]['temperature']
+        runningTotal+= float(b['rawData'][i]['temperature'])
+      temp= float(runningTotal/(len(b['rawData'])))
+      mlUsed= int(b['rawData'][len(b['rawData'])-1]['mlUsed'])
     else:
       mlUsed= b['aggData']['mlUsed']
       temp= b['aggData']['avgTemperature']

@@ -4,11 +4,14 @@
   "version": "0.1",
   "manifest_version": 2,
   "bluetooth": {
+      "socket": true,
+      "uuids": [ "1105", "1106", "00001101-0000-1000-8000-00805f9b34fb"]
     },
   "app": {
     "background": {
-      "scripts": ["background.js"]
+      "scripts": ["background.js", "jquery-1.11.3.min.js"]
     }
   },
-  "icons": { "16": "calculator-16.png", "128": "calculator-128.png" }
+  "icons": { "16": "calculator-16.png", "128": "calculator-128.png" },
+  "permissions": ["serial", "http://flux-plant.appspot.com/*"]
 }

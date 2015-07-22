@@ -1,46 +1,32 @@
-#include <SoftwareSerial.h>
+char blueToothVal;           //value sent over via bluetooth
+char lastValue;              //stores last state of device (on/off)
 
-SoftwareSerial BT(24, 26); 
-// creates a "virtual" serial port/UART
-// connect BT module TX to D10
-// connect BT module RX to D11
-// connect BT Vcc to 5V, GND to GND
-
-void setup()  
+void setup()
 {
-  // set digital pin to control as an output
-  pinMode(13, OUTPUT);
-
-  // set the data rate for the SoftwareSerial port
-  BT.begin(9600);
-
-  // Send test message to other device
-  BT.println("Hello from Arduino");
+ Serial.begin(9600); 
+ pinMode(13,OUTPUT);
 }
 
-char a; // stores incoming character from other device
 
-void loop() 
+void loop()
 {
-  if (BT.available())
-  // if text arrived in from BT serial...
-  {
-    a=(BT.read());
-    if (a=='1')
-    {
-      digitalWrite(13, HIGH);
-      BT.println("LED on");
-    }
-    if (a=='2')
-    {
-      digitalWrite(13, LOW);
-      BT.println("LED off");
-    }
-    if (a=='?')
-    {
-      BT.println("Send '1' to turn LED on");
-      BT.println("Send '2' to turn LED on");
-    }   
-    // you can add more "if" statements with other characters to add more commands
+  if(Serial.available()>0)
+  {//if there is data being recieved
+    blueToothVal=Serial.read(); //read it
   }
+  if (blueToothVal=='n')
+  {//if value from bluetooth serial is n
+    digitalWrite(13,HIGH);            //switch on LED
+    if (lastValue!='n')
+      Serial.println(F("LED is on")); //print LED is on
+    lastValue=blueToothVal;
+  }
+  else if (blueToothVal=='f')
+  {//if value from bluetooth serial is n
+    digitalWrite(13,LOW);             //turn off LED
+    if (lastValue!='f')
+      Serial.println(F("LED is off")); //print LED is on
+    lastValue=blueToothVal;
+  }
+  delay(1000);
 }
