@@ -26,7 +26,7 @@ FACEBOOK_AVATAR_URL = 'https://graph.facebook.com/{0}/picture?type=large'
 FOURSQUARE_USER_LINK = 'http://foursquare.com/user/{0}'
 
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
@@ -94,8 +94,7 @@ class Login(BaseRequestHandler):
     if self.logged_in:
       self.redirect('/fp/profile')
     else:
-      path = os.path.join(os.path.dirname(__file__), 'static/login.html')
-      template = JINJA_ENVIRONMENT.get_template('static/login.html')
+      template = JINJA_ENVIRONMENT.get_template('login.html')
       self.response.write(template.render())
     
 
@@ -103,12 +102,11 @@ class ProfileHandler(BaseRequestHandler):
   def get(self):
     """Handles GET /profile"""
     if self.logged_in:
-      path = os.path.join(os.path.dirname(__file__), 'static/profile.html')
       template_values={ 
         'name': self.current_user.name,
         'user_img': self.current_user.avatar_url     
       }
-      template = JINJA_ENVIRONMENT.get_template('static/profile.html')
+      template = JINJA_ENVIRONMENT.get_template('profile.html')
       self.response.write(template.render(template_values))
     else:
       self.redirect('/fp/login')
