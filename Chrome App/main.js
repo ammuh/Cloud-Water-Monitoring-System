@@ -25,7 +25,6 @@ $('button.send').click(function(){
 	    console.log("Sent " + bytes_sent + " bytes")
 	  }
 	})
-	setTimeout(function (){newResp();}, 1500);
 });
 
 $('button.websend').click(function(){
