@@ -4,15 +4,10 @@ Fluxplant is a cloud based home water monitoring system that allows users to tra
 
 ### File Structure ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Arduino Code - Folder containing all files used in developement for the Arduino module in the projects.
+* Chrome App - Desktop toolkit developed for recieving data from Arduino module and dumping to Server in cloud.
+* Flux_Plan_PyWeb - Server and Web Application that stores user data, recieves sensor data, and displays consumption statistics for users. 
 
-### How do I get set up? ###
+### Resources ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* For full project documentation and videos, visit: http://bluestampengineering.com/portfolio-view/ammar-h/
