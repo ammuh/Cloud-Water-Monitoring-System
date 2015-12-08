@@ -1,3 +1,7 @@
+/*
+* Fluxduino Code for sending CSV data over bluetooth.
+*/
+
 #include <OneWire.h>
 OneWire ds(6);
 float temperature;

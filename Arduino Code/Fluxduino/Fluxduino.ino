@@ -1,5 +1,5 @@
 /*
-Code for Fluxduino
+Code for Fluxduino for sending data over wifi
 */
 
 /* Libraries */
